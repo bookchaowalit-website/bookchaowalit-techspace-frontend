@@ -1,0 +1,368 @@
+---
+name: "Rust"
+description: "A systems programming language that runs blazingly fast, prevents segfaults, and guarantees thread safety"
+category: "Backend"
+status: "Learning"
+url: "https://www.rust-lang.org"
+imageUrl: "/icons/placeholder.svg"
+tags: ["systems", "performance", "memory-safe", "mozilla", "wasm"]
+experience: "Beginner"
+rating: 4
+notes: "Fascinating language with great memory safety. Steep learning curve but worth it for systems programming."
+dateAdded: "2024-06-01"
+lastUsed: "2024-11-01"
+featured: false
+difficulty: "Hard"
+learningResources: ["The Rust Book", "Rust by Example", "Rustlings"]
+projectsUsed: ["CLI Tools", "Web Assembly Experiments"]
+---
+
+# Rust: The Future of Systems Programming
+
+Rust has been on my learning radar for a while, and diving into it has been both challenging and incredibly rewarding. It's a language that makes you think differently about memory management, ownership, and safety.
+
+## Why I'm Learning Rust
+
+### Memory Safety Without Garbage Collection
+Rust solves the age-old problem of memory management:
+- No null pointer dereferences
+- No buffer overflows
+- No memory leaks
+- No garbage collector overhead
+
+### Performance
+Rust code runs as fast as C and C++:
+- Zero-cost abstractions
+- Minimal runtime
+- Predictable performance
+- No garbage collection pauses
+
+### Growing Ecosystem
+The Rust ecosystem is rapidly expanding:
+- **Web development**: Actix, Warp, Axum
+- **WebAssembly**: First-class WASM support
+- **Blockchain**: Solana, Polkadot built with Rust
+- **CLI tools**: ripgrep, fd, bat, exa
+
+## The Ownership System
+
+### What Makes Rust Different
+The ownership system is Rust's killer feature:
+
+```rust
+fn main() {
+    let s1 = String::from("hello");
+    let s2 = s1; // s1 is moved to s2
+    
+    // println!("{}", s1); // This would cause a compile error!
+    println!("{}", s2); // This works fine
+}
+```
+
+### Borrowing and References
+Smart borrowing system prevents data races:
+
+```rust
+fn calculate_length(s: &String) -> usize {
+    s.len() // We can read s but not modify it
+} // s goes out of scope but we don't drop the data
+
+fn main() {
+    let s1 = String::from("hello");
+    let len = calculate_length(&s1); // Borrow s1
+    println!("The length of '{}' is {}.", s1, len); // s1 still valid
+}
+```
+
+### Mutable References
+Controlled mutability:
+
+```rust
+fn change_string(s: &mut String) {
+    s.push_str(", world");
+}
+
+fn main() {
+    let mut s = String::from("hello");
+    change_string(&mut s);
+    println!("{}", s); // Prints "hello, world"
+}
+```
+
+## My Learning Journey
+
+### Phase 1: Fighting the Borrow Checker
+Initial frustration with ownership rules:
+```rust
+// This doesn't work (my first attempt)
+fn get_first_word(s: String) -> String {
+    let words: Vec<&str> = s.split_whitespace().collect();
+    words[0].to_string() // Borrowed value does not live long enough
+}
+
+// This works (after understanding lifetimes)
+fn get_first_word(s: &str) -> &str {
+    s.split_whitespace().next().unwrap_or("")
+}
+```
+
+### Phase 2: Embracing the System
+Learning to work with ownership rather than against it:
+```rust
+// Using Option for safe null handling
+fn find_user(id: u32, users: &[User]) -> Option<&User> {
+    users.iter().find(|user| user.id == id)
+}
+
+// Pattern matching for error handling
+fn divide(a: f64, b: f64) -> Result<f64, String> {
+    if b == 0.0 {
+        Err("Cannot divide by zero".to_string())
+    } else {
+        Ok(a / b)
+    }
+}
+```
+
+### Phase 3: Appreciating the Safety
+Now I see how Rust prevents entire classes of bugs:
+```rust
+use std::thread;
+use std::sync::Arc;
+use std::sync::Mutex;
+
+// Thread-safe shared state
+fn main() {
+    let counter = Arc::new(Mutex::new(0));
+    let mut handles = vec![];
+
+    for _ in 0..10 {
+        let counter = Arc::clone(&counter);
+        let handle = thread::spawn(move || {
+            let mut num = counter.lock().unwrap();
+            *num += 1;
+        });
+        handles.push(handle);
+    }
+
+    for handle in handles {
+        handle.join().unwrap();
+    }
+
+    println!("Result: {}", *counter.lock().unwrap());
+}
+```
+
+## Projects I've Built
+
+### 1. CLI File Organizer
+A tool to organize files by type:
+
+```rust
+use std::fs;
+use std::path::Path;
+use clap::Parser;
+
+#[derive(Parser)]
+#[command(name = "file-organizer")]
+struct Args {
+    #[arg(short, long)]
+    directory: String,
+    
+    #[arg(short, long)]
+    dry_run: bool,
+}
+
+fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let args = Args::parse();
+    
+    for entry in fs::read_dir(&args.directory)? {
+        let entry = entry?;
+        let path = entry.path();
+        
+        if path.is_file() {
+            organize_file(&path, args.dry_run)?;
+        }
+    }
+    
+    Ok(())
+}
+```
+
+### 2. Simple HTTP Server
+Learning async Rust with Tokio:
+
+```rust
+use tokio::net::TcpListener;
+use tokio::io::{AsyncReadExt, AsyncWriteExt};
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let listener = TcpListener::bind("127.0.0.1:8080").await?;
+    
+    loop {
+        let (mut socket, _) = listener.accept().await?;
+        
+        tokio::spawn(async move {
+            let mut buffer = [0; 1024];
+            
+            if let Ok(_) = socket.read(&mut buffer).await {
+                let response = "HTTP/1.1 200 OK\r\n\r\nHello, World!";
+                let _ = socket.write_all(response.as_bytes()).await;
+            }
+        });
+    }
+}
+```
+
+## Rust Patterns I'm Learning
+
+### Error Handling with `?` Operator
+Elegant error propagation:
+
+```rust
+use std::fs::File;
+use std::io::{self, Read};
+
+fn read_file_contents(filename: &str) -> Result<String, io::Error> {
+    let mut file = File::open(filename)?; // Propagate error if any
+    let mut contents = String::new();
+    file.read_to_string(&mut contents)?; // Propagate error if any
+    Ok(contents)
+}
+```
+
+### Pattern Matching Everything
+Rust's pattern matching is incredibly powerful:
+
+```rust
+enum Message {
+    Text(String),
+    Image { url: String, alt: String },
+    Video { url: String, duration: u32 },
+}
+
+fn process_message(msg: Message) {
+    match msg {
+        Message::Text(content) => {
+            println!("Text: {}", content);
+        }
+        Message::Image { url, alt } => {
+            println!("Image: {} (alt: {})", url, alt);
+        }
+        Message::Video { url, duration } => {
+            println!("Video: {} ({}s)", url, duration);
+        }
+    }
+}
+```
+
+### Iterator Combinators
+Functional programming patterns:
+
+```rust
+let numbers: Vec<i32> = (1..=10)
+    .filter(|x| *x % 2 == 0)  // Keep even numbers
+    .map(|x| x * x)           // Square them
+    .collect();               // Collect into Vec
+
+println!("{:?}", numbers); // [4, 16, 36, 64, 100]
+```
+
+## Challenges I'm Still Working Through
+
+### 1. Lifetime Annotations
+Still wrapping my head around complex lifetime scenarios:
+```rust
+// This is getting easier but still challenging
+fn longest<'a>(x: &'a str, y: &'a str) -> &'a str {
+    if x.len() > y.len() {
+        x
+    } else {
+        y
+    }
+}
+```
+
+### 2. Async Programming
+Learning the async ecosystem:
+- Understanding `Future` trait
+- Working with `async`/`await`
+- Choosing between different async runtimes
+
+### 3. Macro System
+Rust macros are powerful but complex:
+```rust
+macro_rules! vec {
+    ( $( $x:expr ),* ) => {
+        {
+            let mut temp_vec = Vec::new();
+            $(
+                temp_vec.push($x);
+            )*
+            temp_vec
+        }
+    };
+}
+```
+
+## Why I'm Excited About Rust
+
+### WebAssembly Integration
+Rust + WASM is a perfect match:
+```rust
+use wasm_bindgen::prelude::*;
+
+#[wasm_bindgen]
+pub fn fibonacci(n: u32) -> u32 {
+    match n {
+        0 => 0,
+        1 => 1,
+        _ => fibonacci(n - 1) + fibonacci(n - 2),
+    }
+}
+```
+
+### Performance in Web Development
+Rust web frameworks are incredibly fast:
+- **Actix Web**: One of the fastest web frameworks
+- **Warp**: Elegant filter-based routing
+- **Axum**: Built on Tokio, great ergonomics
+
+### Growing Industry Adoption
+Companies choosing Rust for critical systems:
+- **Dropbox**: File storage systems
+- **Discord**: High-performance backend services
+- **Mozilla**: Firefox engine components
+- **Microsoft**: Windows components
+
+## Resources That Help
+
+### Learning Materials
+- [The Rust Programming Language](https://doc.rust-lang.org/book/) - The official book
+- [Rust by Example](https://doc.rust-lang.org/rust-by-example/) - Learn by doing
+- [Rustlings](https://github.com/rust-lang/rustlings/) - Interactive exercises
+
+### Community
+- [r/rust](https://www.reddit.com/r/rust/) - Active community
+- [Rust Discord](https://discord.gg/rust-lang) - Real-time help
+- [This Week in Rust](https://this-week-in-rust.org/) - Weekly newsletter
+
+### Tools
+- **Cargo**: Best package manager I've used
+- **rustfmt**: Consistent code formatting
+- **clippy**: Helpful linting suggestions
+- **rust-analyzer**: Excellent language server
+
+## What's Next
+
+My Rust learning roadmap:
+1. **Master async programming** with Tokio
+2. **Build a web API** with Axum
+3. **Explore WebAssembly** integration
+4. **Contribute to open source** Rust projects
+5. **Learn unsafe Rust** for systems programming
+
+Rust challenges everything I thought I knew about systems programming. The initial learning curve is steep, but the guarantees it provides about memory safety and performance make it worth the investment. It's not just a language; it's a new way of thinking about software reliability.
+
+> "Rust is not just about performance. It's about confidence." - Someone smarter than me

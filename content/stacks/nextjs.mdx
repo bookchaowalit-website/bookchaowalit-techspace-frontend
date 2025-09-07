@@ -1,0 +1,212 @@
+---
+name: "Next.js"
+description: "The React Framework for Production"
+category: "Frontend"
+status: "Using Now"
+url: "https://nextjs.org"
+imageUrl: "/icons/nextjs.svg"
+tags: ["react", "fullstack", "ssr", "vercel", "routing"]
+experience: "Advanced"
+rating: 5
+notes: "Amazing for full-stack React applications. Great developer experience and performance."
+dateAdded: "2023-02-01"
+lastUsed: "2024-12-01"
+featured: true
+difficulty: "Medium"
+learningResources: ["Next.js Docs", "Vercel Examples", "Lee Robinson YouTube"]
+projectsUsed: ["Tech Space", "Blog Platform", "SaaS Dashboard"]
+---
+
+# Next.js: Beyond Just React
+
+Next.js has revolutionized how I build React applications. It's not just a framework; it's a complete solution that handles everything from routing to optimization, making it incredibly powerful for production applications.
+
+## Why Next.js is a Game Changer
+
+### Full-Stack Capabilities
+Next.js bridges the gap between frontend and backend:
+- **API Routes**: Build APIs alongside your frontend
+- **Server-Side Rendering**: Better SEO and performance
+- **Static Site Generation**: Lightning-fast static sites
+- **Edge Functions**: Run code closer to users
+
+### Developer Experience
+The DX is phenomenal:
+
+```bash
+# Create a new Next.js app
+npx create-next-app@latest my-app --typescript --tailwind --app
+
+# Development server with hot reload
+npm run dev
+
+# Production build with optimizations
+npm run build
+```
+
+### File-Based Routing
+No more complex routing configurations:
+
+```
+app/
+├── page.tsx              # /
+├── about/page.tsx        # /about
+├── blog/
+│   ├── page.tsx          # /blog
+│   └── [slug]/page.tsx   # /blog/[slug]
+└── api/
+    └── users/route.ts    # /api/users
+```
+
+## App Router vs Pages Router
+
+### App Router (Recommended)
+The new App Router with React Server Components:
+
+```tsx
+// app/page.tsx - Server Component by default
+export default async function HomePage() {
+  const posts = await fetchPosts(); // Server-side data fetching
+  
+  return (
+    <div>
+      <h1>My Blog</h1>
+      {posts.map(post => (
+        <PostCard key={post.id} post={post} />
+      ))}
+    </div>
+  );
+}
+```
+
+### Pages Router (Legacy)
+The traditional approach:
+
+```tsx
+// pages/index.tsx
+import { GetStaticProps } from 'next';
+
+export default function HomePage({ posts }) {
+  return (
+    <div>
+      <h1>My Blog</h1>
+      {posts.map(post => (
+        <PostCard key={post.id} post={post} />
+      ))}
+    </div>
+  );
+}
+
+export const getStaticProps: GetStaticProps = async () => {
+  const posts = await fetchPosts();
+  return { props: { posts } };
+};
+```
+
+## Key Features I Love
+
+### Image Optimization
+Automatic image optimization with the `Image` component:
+
+```tsx
+import Image from 'next/image';
+
+<Image
+  src="/hero.jpg"
+  alt="Hero image"
+  width={800}
+  height={600}
+  priority
+  placeholder="blur"
+/>
+```
+
+### Built-in CSS Support
+Multiple styling options out of the box:
+- **CSS Modules**: Scoped CSS
+- **Tailwind CSS**: Utility-first CSS
+- **Sass**: CSS preprocessor
+- **CSS-in-JS**: Styled-components, Emotion
+
+### Performance by Default
+Next.js optimizes everything:
+- Code splitting
+- Bundle optimization
+- Font optimization
+- Script optimization
+
+## My Next.js Projects
+
+### 1. Tech Space (This Project!)
+- **App Router**: Using the latest features
+- **MDX Integration**: Rich content with components
+- **Tailwind CSS**: Utility-first styling
+- **TypeScript**: Type safety throughout
+
+### 2. Personal Blog Platform
+- **Static Generation**: Lightning-fast loading
+- **MDX**: Rich blog posts with interactive components
+- **SEO Optimized**: Perfect Lighthouse scores
+- **Incremental Static Regeneration**: Fresh content without rebuilds
+
+### 3. SaaS Dashboard
+- **API Routes**: Backend logic with frontend
+- **Authentication**: NextAuth.js integration
+- **Database**: Prisma with PostgreSQL
+- **Real-time**: WebSocket integration
+
+## Best Practices I Follow
+
+### Performance Optimization
+1. Use `Image` component for all images
+2. Implement code splitting with dynamic imports
+3. Optimize fonts with `next/font`
+4. Use Suspense boundaries for loading states
+
+### SEO & Accessibility
+1. Proper meta tags with `next/head` or metadata API
+2. Semantic HTML structure
+3. Alt text for all images
+4. Keyboard navigation support
+
+### Development Workflow
+1. TypeScript for type safety
+2. ESLint + Prettier for code quality
+3. Husky for pre-commit hooks
+4. Vercel for deployment
+
+## Deployment Options
+
+### Vercel (Recommended)
+- Zero-config deployment
+- Preview deployments for PRs
+- Edge functions support
+- Built-in analytics
+
+### Self-Hosted
+- Docker containers
+- PM2 for process management
+- Nginx reverse proxy
+- CDN for static assets
+
+## What's Next for Next.js?
+
+Exciting features on the horizon:
+- **Turbopack**: Faster bundler (Webpack replacement)
+- **Server Actions**: Simplified server mutations
+- **Partial Prerendering**: Best of both worlds
+- **React Server Components**: Better performance
+
+## Resources
+
+### Official Documentation
+- [Next.js Docs](https://nextjs.org/docs) - Comprehensive and well-written
+- [Next.js Examples](https://github.com/vercel/next.js/tree/canary/examples) - Real-world examples
+- [Learn Next.js](https://nextjs.org/learn) - Interactive tutorial
+
+### Community & Learning
+- [Lee Robinson](https://leerob.io/) - VP of Developer Experience at Vercel
+- [Next.js Discord](https://discord.gg/nextjs) - Active community
+- [Vercel Blog](https://vercel.com/blog) - Latest updates and features
+
+Next.js has become my go-to framework for React applications. Whether I'm building a simple blog or a complex SaaS application, Next.js provides the tools and performance I need to ship production-ready applications quickly.

@@ -1,0 +1,122 @@
+---
+name: "React"
+description: "A JavaScript library for building user interfaces"
+category: "Frontend"
+status: "Using Now"
+url: "https://react.dev"
+imageUrl: "/icons/react.svg"
+tags: ["javascript", "frontend", "spa", "components", "hooks"]
+experience: "Advanced"
+rating: 5
+notes: "My go-to frontend framework. Love the component-based architecture and ecosystem."
+dateAdded: "2023-01-01"
+lastUsed: "2024-12-01"
+featured: true
+difficulty: "Medium"
+learningResources: ["React Official Docs", "React Beta Docs", "Kent C. Dodds Blog"]
+projectsUsed: ["Personal Portfolio", "E-commerce App", "Dashboard UI"]
+---
+
+# React: My Frontend Foundation
+
+React has been my primary frontend framework for over two years, and it continues to amaze me with its simplicity and power. The component-based architecture makes building complex UIs manageable and maintainable.
+
+## Why I Love React
+
+### Component-Based Architecture
+The ability to break down complex UIs into smaller, reusable components is a game-changer. It promotes:
+- **Reusability**: Write once, use everywhere
+- **Maintainability**: Easy to debug and update
+- **Testability**: Each component can be tested in isolation
+
+### Hooks Revolution
+React Hooks transformed how I write components:
+
+```jsx
+// Before: Class components were verbose
+class Counter extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { count: 0 };
+  }
+
+  render() {
+    return (
+      <button onClick={() => this.setState({ count: this.state.count + 1 })}>
+        Count: {this.state.count}
+      </button>
+    );
+  }
+}
+
+// After: Hooks make it clean and functional
+function Counter() {
+  const [count, setCount] = useState(0);
+
+  return (
+    <button onClick={() => setCount(count + 1)}>
+      Count: {count}
+    </button>
+  );
+}
+```
+
+### Ecosystem & Community
+The React ecosystem is incredible:
+- **Next.js** for full-stack applications
+- **React Router** for client-side routing
+- **React Query** for server state management
+- **Framer Motion** for animations
+- **Styled Components** / **Tailwind CSS** for styling
+
+## My React Journey
+
+### Learning Path
+1. **Basics**: JSX, Components, Props, State
+2. **Advanced**: Hooks, Context API, Performance optimization
+3. **Ecosystem**: Next.js, TypeScript integration, Testing
+4. **Best Practices**: Code splitting, memoization, accessibility
+
+### Key Projects
+- **Personal Portfolio**: Built with Next.js and Tailwind CSS
+- **E-commerce Platform**: Complex state management with Context API
+- **Admin Dashboard**: Data visualization with Chart.js integration
+
+## Performance Tips I've Learned
+
+### Optimization Techniques
+- Use `React.memo()` for expensive components
+- Implement `useMemo()` and `useCallback()` strategically
+- Code splitting with `React.lazy()` and `Suspense`
+- Optimize bundle size with tree shaking
+
+### Common Pitfalls to Avoid
+- Don't overuse `useEffect()`
+- Avoid inline functions in JSX props
+- Be careful with object and array dependencies
+- Don't forget to clean up subscriptions
+
+## What's Next?
+
+I'm excited about:
+- **React Server Components** in Next.js 13+
+- **Concurrent Features** for better UX
+- **React 19** new features and improvements
+- **Remix** as an alternative full-stack framework
+
+React continues to evolve, and I'm along for the ride. It's not just a library; it's a way of thinking about UI development that has fundamentally changed how I approach frontend projects.
+
+> "The best thing about React is that it makes you think differently about building user interfaces." - Me, probably
+
+## Resources
+
+### Essential Reading
+- [React Beta Docs](https://beta.reactjs.org/) - The new docs are amazing
+- [Overreacted](https://overreacted.io/) - Dan Abramov's blog
+- [React Patterns](https://reactpatterns.com/) - Common patterns and anti-patterns
+
+### Tools I Use Daily
+- **React Developer Tools** - Browser extension for debugging
+- **Storybook** - Component documentation and testing
+- **React Testing Library** - Testing React components
+- **ESLint React Plugin** - Code quality and best practices

@@ -1,0 +1,331 @@
+---
+name: "TypeScript"
+description: "Typed JavaScript at Any Scale"
+category: "Frontend"
+status: "Using Now"
+url: "https://www.typescriptlang.org"
+imageUrl: "/icons/typescript.svg"
+tags: ["javascript", "types", "microsoft", "productivity", "tooling"]
+experience: "Advanced"
+rating: 5
+notes: "Essential for large-scale applications. Makes JavaScript development much safer and more productive."
+dateAdded: "2022-06-01"
+lastUsed: "2024-12-01"
+featured: true
+difficulty: "Medium"
+learningResources: ["TypeScript Handbook", "Type Challenges", "Matt Pocock YouTube"]
+projectsUsed: ["All React Projects", "Node.js APIs", "Electron Apps"]
+---
+
+# TypeScript: JavaScript with Superpowers
+
+TypeScript has completely transformed how I write JavaScript. What started as skepticism about "adding complexity" has evolved into appreciation for the safety, productivity, and confidence it brings to every project.
+
+## The TypeScript Journey
+
+### Before TypeScript
+Writing JavaScript felt like walking on thin ice:
+
+```javascript
+// This looks innocent but is a runtime bomb waiting to explode
+function calculateTotal(items) {
+  return items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+}
+
+// What happens when someone passes wrong data?
+calculateTotal([{ price: "10", quantity: 2 }]); // "020" 😱
+```
+
+### After TypeScript
+Now I catch errors at compile time:
+
+```typescript
+interface CartItem {
+  id: string;
+  price: number;
+  quantity: number;
+  name: string;
+}
+
+function calculateTotal(items: CartItem[]): number {
+  return items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+}
+
+// TypeScript catches this immediately
+calculateTotal([{ price: "10", quantity: 2 }]); // ❌ Type error!
+```
+
+## Why I Can't Live Without TypeScript
+
+### 1. Catch Errors Early
+No more runtime surprises:
+- Typos in property names
+- Wrong function arguments
+- Undefined method calls
+- Type mismatches
+
+### 2. Incredible Tooling
+The developer experience is unmatched:
+- **IntelliSense**: Auto-completion everywhere
+- **Refactoring**: Rename symbols across files
+- **Navigation**: Go to definition, find all references
+- **Error Detection**: Red squiggly lines before you run code
+
+### 3. Self-Documenting Code
+Types serve as living documentation:
+
+```typescript
+// This function signature tells you everything you need to know
+async function createUser(
+  userData: {
+    email: string;
+    password: string;
+    profile: {
+      firstName: string;
+      lastName: string;
+      avatar?: string;
+    };
+  },
+  options?: {
+    sendWelcomeEmail?: boolean;
+    assignDefaultRole?: boolean;
+  }
+): Promise<{ user: User; token: string }> {
+  // Implementation...
+}
+```
+
+## Advanced TypeScript Patterns I Use
+
+### Generic Functions
+Write reusable, type-safe code:
+
+```typescript
+function createApiClient<T>() {
+  return {
+    async get<R = T>(endpoint: string): Promise<R> {
+      const response = await fetch(endpoint);
+      return response.json();
+    },
+    
+    async post<R = T>(endpoint: string, data: Partial<T>): Promise<R> {
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: { 'Content-Type': 'application/json' }
+      });
+      return response.json();
+    }
+  };
+}
+
+// Usage with automatic type inference
+const userClient = createApiClient<User>();
+const user = await userClient.get<User>('/api/users/1'); // user is typed as User
+```
+
+### Utility Types
+Transform and manipulate types:
+
+```typescript
+interface User {
+  id: string;
+  email: string;
+  password: string;
+  profile: {
+    firstName: string;
+    lastName: string;
+    avatar?: string;
+  };
+  createdAt: Date;
+}
+
+// Create types from existing ones
+type CreateUserInput = Omit<User, 'id' | 'createdAt'>; // Input for creating users
+type UserProfile = Pick<User, 'id' | 'email' | 'profile'>; // Public user data
+type UpdateUserInput = Partial<Pick<User, 'email' | 'profile'>>; // Updates
+```
+
+### Conditional Types
+Create types based on conditions:
+
+```typescript
+type ApiResponse<T, E = never> = 
+  | { success: true; data: T }
+  | { success: false; error: E };
+
+type UserResponse = ApiResponse<User, string>;
+
+// Usage
+function handleUserResponse(response: UserResponse) {
+  if (response.success) {
+    // TypeScript knows response.data is User
+    console.log(response.data.email);
+  } else {
+    // TypeScript knows response.error is string
+    console.error(response.error);
+  }
+}
+```
+
+## TypeScript in Different Environments
+
+### React + TypeScript
+Perfect combination for component development:
+
+```typescript
+interface ButtonProps {
+  variant: 'primary' | 'secondary' | 'danger';
+  size?: 'sm' | 'md' | 'lg';
+  children: React.ReactNode;
+  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  disabled?: boolean;
+}
+
+export function Button({ 
+  variant, 
+  size = 'md', 
+  children, 
+  onClick, 
+  disabled = false 
+}: ButtonProps) {
+  return (
+    <button
+      className={`btn btn-${variant} btn-${size}`}
+      onClick={onClick}
+      disabled={disabled}
+    >
+      {children}
+    </button>
+  );
+}
+```
+
+### Node.js + TypeScript
+Backend development with type safety:
+
+```typescript
+import express from 'express';
+
+interface CreatePostRequest {
+  title: string;
+  content: string;
+  tags: string[];
+}
+
+const app = express();
+
+app.post('/api/posts', async (req, res) => {
+  const { title, content, tags }: CreatePostRequest = req.body;
+  
+  try {
+    const post = await createPost({ title, content, tags });
+    res.json({ success: true, data: post });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+```
+
+## Configuration That Works
+
+### tsconfig.json
+My production-ready configuration:
+
+```json
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["DOM", "DOM.Iterable", "ES6"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "exclude": ["node_modules"]
+}
+```
+
+## Common Pitfalls & Solutions
+
+### 1. Overusing `any`
+❌ Don't do this:
+```typescript
+function processData(data: any): any {
+  return data.map((item: any) => item.value);
+}
+```
+
+✅ Be specific:
+```typescript
+interface DataItem {
+  value: string;
+  label: string;
+}
+
+function processData(data: DataItem[]): string[] {
+  return data.map(item => item.value);
+}
+```
+
+### 2. Not Using Strict Mode
+Always enable strict mode for maximum type safety:
+- `strict: true`
+- `noUncheckedIndexedAccess: true`
+- `noImplicitReturns: true`
+
+### 3. Ignoring Type Errors
+Don't use `@ts-ignore` as a band-aid. Fix the underlying issue.
+
+## TypeScript in My Projects
+
+### This Tech Space Project
+- **Strict type checking**: Catch errors early
+- **MDX integration**: Typed frontmatter and content
+- **Component props**: Type-safe React components
+- **API responses**: Predictable data shapes
+
+### Other Projects
+- **E-commerce platform**: 40K+ lines, zero runtime type errors
+- **API services**: Type-safe request/response handling
+- **Mobile apps**: React Native with TypeScript
+
+## The Future of TypeScript
+
+Exciting developments:
+- **Better inference**: Less manual typing needed
+- **Template literal types**: More expressive string types
+- **Decorators**: Stage 3 proposal support
+- **Performance improvements**: Faster compilation
+
+## Resources & Learning
+
+### Essential Resources
+- [TypeScript Handbook](https://www.typescriptlang.org/docs/) - Official docs
+- [Type Challenges](https://github.com/type-challenges/type-challenges) - Practice exercises
+- [TypeScript Deep Dive](https://basarat.gitbook.io/typescript/) - Comprehensive guide
+
+### Community & Tools
+- [Matt Pocock](https://www.mattpocock.com/) - TypeScript wizard
+- [TypeScript ESLint](https://typescript-eslint.io/) - Linting rules
+- [ts-node](https://typestrong.org/ts-node/) - Run TypeScript directly
+
+TypeScript isn't just a tool; it's a mindset shift towards more reliable, maintainable, and scalable JavaScript development. Once you experience the confidence that comes from compile-time type checking, there's no going back to plain JavaScript for serious projects.
