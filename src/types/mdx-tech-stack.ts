@@ -1,14 +1,14 @@
-import { TechStack } from './tech-stack';
+import { TechStack, TechCategory, TechStatus, ExperienceLevel } from './tech-stack';
 
 export interface MDXTechStackFrontmatter {
   name: string;
   description: string;
-  category: string;
-  status: string;
+  category: TechCategory;
+  status: TechStatus;
   url?: string;
   imageUrl?: string;
   tags: string[];
-  experience: string;
+  experience: ExperienceLevel;
   rating: number;
   notes?: string;
   dateAdded: string;
@@ -36,12 +36,12 @@ export function mdxToTechStack(mdx: MDXTechStack): TechStack {
     id: mdx.id,
     name: mdx.name,
     description: mdx.description,
-    category: mdx.category as any,
-    status: mdx.status as any,
+    category: mdx.category,
+    status: mdx.status,
     url: mdx.url,
     imageUrl: mdx.imageUrl,
     tags: mdx.tags,
-    experience: mdx.experience as any,
+    experience: mdx.experience,
     rating: mdx.rating,
     notes: mdx.notes,
     dateAdded: mdx.dateAdded,

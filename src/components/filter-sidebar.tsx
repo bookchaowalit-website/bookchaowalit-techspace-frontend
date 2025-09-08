@@ -1,11 +1,10 @@
 'use client';
 
-import { useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { TechFilter, TechCategory, TechStatus, ExperienceLevel } from '@/types/tech-stack';
+import { TechFilter } from '@/types/tech-stack';
 import { categories, statuses, experienceLevels } from '@/data/tech-stacks';
 import { Filter, RotateCcw, Star } from 'lucide-react';
 
@@ -15,13 +14,11 @@ interface FilterSidebarProps {
 }
 
 export function FilterSidebar({ filter, onFilterChange }: FilterSidebarProps) {
-  const [isExpanded, setIsExpanded] = useState(false);
-
   const clearFilters = () => {
     onFilterChange({});
   };
 
-  const updateFilter = (key: keyof TechFilter, value: any) => {
+  const updateFilter = (key: keyof TechFilter, value: string | number | undefined) => {
     onFilterChange({
       ...filter,
       [key]: value === 'all' ? undefined : value

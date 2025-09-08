@@ -30,7 +30,7 @@ interface TechStackCardProps {
   onDelete?: (id: string) => void;
 }
 
-const categoryIcons: Record<string, React.ComponentType<any>> = {
+const categoryIcons: Record<string, React.ComponentType<React.SVGProps<SVGSVGElement>>> = {
   'Frontend': Code,
   'Backend': Settings,
   'Database': Database,
@@ -209,7 +209,7 @@ export function TechStackCard({ techStack, onEdit, onDelete }: TechStackCardProp
         {techStack.notes && (
           <div className="border-t border-border pt-3">
             <p className="text-xs text-muted-foreground font-mono italic line-clamp-2">
-              "{techStack.notes}"
+              &ldquo;{techStack.notes}&rdquo;
             </p>
           </div>
         )}

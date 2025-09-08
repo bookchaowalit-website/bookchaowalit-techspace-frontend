@@ -5,11 +5,11 @@ import { Header } from '@/components/header';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { 
-  ArrowLeft, 
-  Calendar, 
-  Clock, 
-  ExternalLink, 
+  import {
+  ArrowLeft,
+  Calendar,
+  Clock,
+  ExternalLink,
   Star,
   Code,
   Database,
@@ -25,7 +25,7 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 
-const categoryIcons: Record<string, React.ComponentType<any>> = {
+const categoryIcons: Record<string, React.ComponentType<React.SVGProps<SVGSVGElement>>> = {
   'Frontend': Code,
   'Backend': Settings,
   'Database': Database,
@@ -58,24 +58,24 @@ const experienceColors: Record<string, string> = {
 };
 
 interface PageProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
 // MDX Components for rich content
 const mdxComponents = {
-  h1: (props: any) => <h1 className="font-pixel text-3xl text-primary mb-6" {...props} />,
-  h2: (props: any) => <h2 className="font-pixel text-2xl text-primary mt-8 mb-4" {...props} />,
-  h3: (props: any) => <h3 className="font-pixel text-xl text-primary mt-6 mb-3" {...props} />,
-  p: (props: any) => <p className="font-mono text-sm text-muted-foreground leading-relaxed mb-4" {...props} />,
-  ul: (props: any) => <ul className="font-mono text-sm text-muted-foreground mb-4 pl-6" {...props} />,
-  ol: (props: any) => <ol className="font-mono text-sm text-muted-foreground mb-4 pl-6 list-decimal" {...props} />,
-  li: (props: any) => <li className="mb-2" {...props} />,
-  code: (props: any) => <code className="bg-card border px-2 py-1 rounded text-primary font-mono text-xs" {...props} />,
-  pre: (props: any) => <pre className="bg-card border p-4 rounded-lg overflow-x-auto mb-4 font-mono text-xs" {...props} />,
-  blockquote: (props: any) => <blockquote className="border-l-4 border-primary pl-4 italic text-muted-foreground mb-4" {...props} />,
-  a: (props: any) => <a className="text-primary hover:underline" {...props} />,
+  h1: (props: React.HTMLAttributes<HTMLHeadingElement>) => <h1 className="font-pixel text-3xl text-primary mb-6" {...props} />,
+  h2: (props: React.HTMLAttributes<HTMLHeadingElement>) => <h2 className="font-pixel text-2xl text-primary mt-8 mb-4" {...props} />,
+  h3: (props: React.HTMLAttributes<HTMLHeadingElement>) => <h3 className="font-pixel text-xl text-primary mt-6 mb-3" {...props} />,
+  p: (props: React.HTMLAttributes<HTMLParagraphElement>) => <p className="font-mono text-sm text-muted-foreground leading-relaxed mb-4" {...props} />,
+  ul: (props: React.HTMLAttributes<HTMLUListElement>) => <ul className="font-mono text-sm text-muted-foreground mb-4 pl-6" {...props} />,
+  ol: (props: React.HTMLAttributes<HTMLOListElement>) => <ol className="font-mono text-sm text-muted-foreground mb-4 pl-6 list-decimal" {...props} />,
+  li: (props: React.HTMLAttributes<HTMLLIElement>) => <li className="mb-2" {...props} />,
+  code: (props: React.HTMLAttributes<HTMLElement>) => <code className="bg-card border px-2 py-1 rounded text-primary font-mono text-xs" {...props} />,
+  pre: (props: React.HTMLAttributes<HTMLPreElement>) => <pre className="bg-card border p-4 rounded-lg overflow-x-auto mb-4 font-mono text-xs" {...props} />,
+  blockquote: (props: React.HTMLAttributes<HTMLQuoteElement>) => <blockquote className="border-l-4 border-primary pl-4 italic text-muted-foreground mb-4" {...props} />,
+  a: (props: React.AnchorHTMLAttributes<HTMLAnchorElement>) => <a className="text-primary hover:underline" {...props} />,
 };
 
 export async function generateStaticParams() {
@@ -100,8 +100,8 @@ export default async function TechStackPage({ params }: PageProps) {
       <Star
         key={i}
         className={`h-4 w-4 ${
-          i < rating 
-            ? 'text-yellow-400 fill-yellow-400' 
+          i < rating
+            ? 'text-yellow-400 fill-yellow-400'
             : 'text-muted-foreground'
         }`}
       />
@@ -119,7 +119,7 @@ export default async function TechStackPage({ params }: PageProps) {
   return (
     <div className="min-h-screen bg-background tech-grid scanlines">
       <Header />
-      
+
       <main className="container max-w-4xl mx-auto px-4 md:px-6 py-6">
         {/* Back Button */}
         <div className="mb-6">
@@ -139,7 +139,7 @@ export default async function TechStackPage({ params }: PageProps) {
               <div className="p-4 rounded-xl bg-card border border-border shrink-0">
                 <IconComponent className="h-12 w-12 text-primary" />
               </div>
-              
+
               {/* Title and Meta */}
               <div className="flex-1 min-w-0">
                 <div className="flex items-start justify-between mb-4">
@@ -151,7 +151,7 @@ export default async function TechStackPage({ params }: PageProps) {
                       {techStack.description}
                     </p>
                   </div>
-                  
+
                   {techStack.url && (
                     <Button
                       asChild
@@ -173,14 +173,14 @@ export default async function TechStackPage({ params }: PageProps) {
                       {techStack.category}
                     </Badge>
                   </div>
-                  
+
                   <div>
                     <span className="font-mono text-muted-foreground block mb-1">Status</span>
                     <Badge className={`${statusColors[techStack.status]} font-mono`}>
                       {techStack.status}
                     </Badge>
                   </div>
-                  
+
                   <div>
                     <span className="font-mono text-muted-foreground block mb-1">Experience</span>
                     <span className={`font-mono font-semibold ${experienceColors[techStack.experience]}`}>

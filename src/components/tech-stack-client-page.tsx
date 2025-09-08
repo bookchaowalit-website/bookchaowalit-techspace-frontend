@@ -15,10 +15,9 @@ interface TechStackClientPageProps {
 
 export function TechStackClientPage({ techStacks }: TechStackClientPageProps) {
   const [filter, setFilter] = useState<TechFilter>({});
-  const [searchTerm, setSearchTerm] = useState('');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
 
-  // Filter tech stacks based on current filters
+    // Filter tech stacks based on current filters
   const filteredTechStacks = useMemo(() => {
     return techStacks.filter((stack) => {
       // Category filter
@@ -36,25 +35,14 @@ export function TechStackClientPage({ techStacks }: TechStackClientPageProps) {
         return false;
       }
 
-      // Minimum rating filter
+      // Rating filter
       if (filter.minRating && stack.rating < filter.minRating) {
         return false;
       }
 
-      // Search filter
-      if (searchTerm) {
-        const search = searchTerm.toLowerCase();
-        return (
-          stack.name.toLowerCase().includes(search) ||
-          stack.description.toLowerCase().includes(search) ||
-          stack.tags.some(tag => tag.toLowerCase().includes(search)) ||
-          stack.notes?.toLowerCase().includes(search)
-        );
-      }
-
       return true;
     });
-  }, [filter, searchTerm, techStacks]);
+  }, [filter, techStacks]);
 
   return (
     <div className="min-h-screen bg-background tech-grid scanlines">
