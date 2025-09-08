@@ -4,6 +4,7 @@ import { useState, useMemo } from 'react';
 import { Header } from '@/components/header';
 import { FilterSidebar } from '@/components/filter-sidebar';
 import { TechStackCard } from '@/components/tech-stack-card';
+import { TechStackListItem } from '@/components/tech-stack-list-item';
 import { TechStack, TechFilter } from '@/types/tech-stack';
 import { GridIcon, ListIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -15,7 +16,7 @@ interface TechStackClientPageProps {
 
 export function TechStackClientPage({ techStacks }: TechStackClientPageProps) {
   const [filter, setFilter] = useState<TechFilter>({});
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>('list');
 
     // Filter tech stacks based on current filters
   const filteredTechStacks = useMemo(() => {
@@ -90,17 +91,23 @@ export function TechStackClientPage({ techStacks }: TechStackClientPageProps) {
             {filteredTechStacks.length > 0 ? (
               <div className={`
                 ${viewMode === 'grid'
-                  ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4 lg:gap-6'
-                  : 'flex flex-col space-y-4'
+                  ? 'grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6'
+                  : 'space-y-4'
                 }
               `}>
                 {filteredTechStacks.map((techStack) => (
                   <Link href={`/stack/${techStack.id}`} key={techStack.id}>
-                    <TechStackCard
-                      techStack={techStack}
-                      onEdit={(stack) => console.log('Edit:', stack)}
-                      onDelete={(id) => console.log('Delete:', id)}
-                    />
+                    {viewMode === 'grid' ? (
+                      <TechStackCard
+                        techStack={techStack}
+                        onEdit={(stack: TechStack) => console.log('Edit:', stack)}
+                        onDelete={(id: string) => console.log('Delete:', id)}
+                      />
+                    ) : (
+                      <TechStackListItem
+                        techStack={techStack}
+                      />
+                    )}
                   </Link>
                 ))}
               </div>
