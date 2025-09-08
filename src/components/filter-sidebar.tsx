@@ -25,7 +25,7 @@ export function FilterSidebar({ filter, onFilterChange }: FilterSidebarProps) {
     });
   };
 
-  const activeFiltersCount = Object.keys(filter).filter(key => 
+  const activeFiltersCount = Object.keys(filter).filter(key =>
     filter[key as keyof TechFilter] !== undefined && filter[key as keyof TechFilter] !== ''
   ).length;
 

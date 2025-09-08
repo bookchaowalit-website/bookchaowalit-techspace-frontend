@@ -47,12 +47,12 @@ export function TechStackClientPage({ techStacks }: TechStackClientPageProps) {
   return (
     <div className="min-h-screen bg-background tech-grid scanlines">
       <Header />
-      
+
       <main className="container max-w-7xl mx-auto px-4 md:px-6 py-6">
         <div className="flex gap-4 lg:gap-6">
           {/* Sidebar */}
           <FilterSidebar filter={filter} onFilterChange={setFilter} />
-          
+
           {/* Main Content */}
           <div className="flex-1 space-y-6">
             {/* Header Actions */}
@@ -65,7 +65,7 @@ export function TechStackClientPage({ techStacks }: TechStackClientPageProps) {
                   Showing {filteredTechStacks.length} of {techStacks.length} technologies
                 </p>
               </div>
-              
+
               <div className="flex items-center space-x-2">
                 <Button
                   variant={viewMode === 'grid' ? 'default' : 'outline'}
@@ -89,14 +89,14 @@ export function TechStackClientPage({ techStacks }: TechStackClientPageProps) {
             {/* Tech Stack Grid */}
             {filteredTechStacks.length > 0 ? (
               <div className={`
-                ${viewMode === 'grid' 
-                  ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4 lg:gap-6' 
+                ${viewMode === 'grid'
+                  ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4 lg:gap-6'
                   : 'flex flex-col space-y-4'
                 }
               `}>
                 {filteredTechStacks.map((techStack) => (
                   <Link href={`/stack/${techStack.id}`} key={techStack.id}>
-                    <TechStackCard 
+                    <TechStackCard
                       techStack={techStack}
                       onEdit={(stack) => console.log('Edit:', stack)}
                       onDelete={(id) => console.log('Delete:', id)}

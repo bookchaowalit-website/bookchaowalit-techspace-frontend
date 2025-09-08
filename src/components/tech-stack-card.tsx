@@ -4,10 +4,10 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { TechStack } from '@/types/tech-stack';
-import { 
-  ExternalLink, 
-  Star, 
-  Calendar, 
+import {
+  ExternalLink,
+  Star,
+  Calendar,
   Clock,
   Edit,
   Trash2,
@@ -64,14 +64,14 @@ const experienceColors: Record<string, string> = {
 
 export function TechStackCard({ techStack, onEdit, onDelete }: TechStackCardProps) {
   const IconComponent = categoryIcons[techStack.category] || Code;
-  
+
   const renderStars = (rating: number) => {
     return Array.from({ length: 5 }, (_, i) => (
       <Star
         key={i}
         className={`h-3 w-3 ${
-          i < rating 
-            ? 'text-yellow-400 fill-yellow-400' 
+          i < rating
+            ? 'text-yellow-400 fill-yellow-400'
             : 'text-muted-foreground'
         }`}
       />
@@ -102,7 +102,7 @@ export function TechStackCard({ techStack, onEdit, onDelete }: TechStackCardProp
               </p>
             </div>
           </div>
-          
+
           <div className="flex items-center space-x-1">
             {techStack.url && (
               <Button
@@ -146,7 +146,7 @@ export function TechStackCard({ techStack, onEdit, onDelete }: TechStackCardProp
 
         {/* Status and Experience */}
         <div className="flex items-center justify-between">
-          <Badge 
+          <Badge
             className={`${statusColors[techStack.status]} font-mono text-xs pixel-border`}
           >
             {techStack.status}

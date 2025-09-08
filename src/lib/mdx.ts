@@ -15,11 +15,29 @@ export function getAllTechStackSlugs(): string[] {
     if (!fs.existsSync(contentDirectory)) {
       return [];
     }
-    
-    const filenames = fs.readdirSync(contentDirectory);
-    return filenames
-      .filter(name => name.endsWith('.mdx'))
-      .map(name => name.replace(/\.mdx$/, ''));
+
+    const getAllFiles = (dirPath: string, arrayOfFiles: string[] = []): string[] => {
+      const files = fs.readdirSync(dirPath);
+
+      files.forEach(file => {
+        const fullPath = path.join(dirPath, file);
+        if (fs.statSync(fullPath).isDirectory()) {
+          arrayOfFiles = getAllFiles(fullPath, arrayOfFiles);
+        } else if (file.endsWith('.mdx')) {
+          arrayOfFiles.push(fullPath);
+        }
+      });
+
+      return arrayOfFiles;
+    };
+
+    const allMdxFiles = getAllFiles(contentDirectory);
+    return allMdxFiles
+      .map(filePath => {
+        // Extract slug from file path (only use filename, not directory path)
+        const fileName = path.basename(filePath);
+        return fileName.replace(/\.mdx$/, '');
+      });
   } catch (error) {
     console.error('Error reading tech stack slugs:', error);
     return [];
@@ -28,22 +46,38 @@ export function getAllTechStackSlugs(): string[] {
 
 export function getTechStackBySlug(slug: string): MDXTechStack | null {
   try {
-    const fullPath = path.join(contentDirectory, `${slug}.mdx`);
-    
-    if (!fs.existsSync(fullPath)) {
+    // Find the file by searching through subdirectories
+    const findFile = (dirPath: string): string | null => {
+      const files = fs.readdirSync(dirPath);
+
+      for (const file of files) {
+        const fullPath = path.join(dirPath, file);
+        if (fs.statSync(fullPath).isDirectory()) {
+          const found = findFile(fullPath);
+          if (found) return found;
+        } else if (file === `${slug}.mdx`) {
+          return fullPath;
+        }
+      }
+      return null;
+    };
+
+    const fullPath = findFile(contentDirectory);
+
+    if (!fullPath) {
       return null;
     }
-    
+
     const fileContents = fs.readFileSync(fullPath, 'utf8');
     const { data, content } = matter(fileContents);
-    
+
     const frontmatter = data as MDXTechStackFrontmatter;
-    
+
     // Calculate reading time (rough estimate)
     const wordsPerMinute = 200;
     const words = content.split(/\s+/).length;
     const minutes = Math.ceil(words / wordsPerMinute);
-    
+
     return {
       ...frontmatter,
       id: slug,
@@ -72,7 +106,7 @@ export function getAllTechStacks(): MDXTechStack[] {
       if (!a.featured && b.featured) return 1;
       return new Date(b.dateAdded).getTime() - new Date(a.dateAdded).getTime();
     });
-    
+
   return techStacks;
 }
 
@@ -81,20 +115,20 @@ export function getFeaturedTechStacks(): MDXTechStack[] {
 }
 
 export function getTechStacksByCategory(category: string): MDXTechStack[] {
-  return getAllTechStacks().filter(stack => 
+  return getAllTechStacks().filter(stack =>
     stack.category.toLowerCase() === category.toLowerCase()
   );
 }
 
 export function getTechStacksByStatus(status: string): MDXTechStack[] {
-  return getAllTechStacks().filter(stack => 
+  return getAllTechStacks().filter(stack =>
     stack.status.toLowerCase() === status.toLowerCase()
   );
 }
 
 export function searchTechStacks(query: string): MDXTechStack[] {
   const searchTerm = query.toLowerCase();
-  return getAllTechStacks().filter(stack => 
+  return getAllTechStacks().filter(stack =>
     stack.name.toLowerCase().includes(searchTerm) ||
     stack.description.toLowerCase().includes(searchTerm) ||
     stack.tags.some(tag => tag.toLowerCase().includes(searchTerm)) ||
