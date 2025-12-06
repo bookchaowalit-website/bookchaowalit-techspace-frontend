@@ -6,7 +6,8 @@ import { Card } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { TechFilter } from '@/types/tech-stack';
 import { categories, statuses, experienceLevels } from '@/data/tech-stacks';
-import { Filter, RotateCcw, Star } from 'lucide-react';
+import { Filter, RotateCcw, Star, X } from 'lucide-react';
+import { useState } from 'react';
 
 interface FilterSidebarProps {
   filter: TechFilter;
@@ -14,6 +15,8 @@ interface FilterSidebarProps {
 }
 
 export function FilterSidebar({ filter, onFilterChange }: FilterSidebarProps) {
+  const [isOpen, setIsOpen] = useState(false);
+
   const clearFilters = () => {
     onFilterChange({});
   };
@@ -30,7 +33,43 @@ export function FilterSidebar({ filter, onFilterChange }: FilterSidebarProps) {
   ).length;
 
   return (
-    <div className="w-64 lg:w-72 shrink-0 space-y-4">
+    <>
+      {/* Mobile Filter Button */}
+      <Button
+        variant="outline"
+        className="lg:hidden fixed bottom-4 right-4 z-40 pixel-border glow shadow-lg"
+        onClick={() => setIsOpen(!isOpen)}
+        aria-label="Toggle filters"
+      >
+        <Filter className="h-4 w-4 mr-2" />
+        Filters
+        {activeFiltersCount > 0 && (
+          <Badge variant="secondary" className="ml-2 pixel-border">
+            {activeFiltersCount}
+          </Badge>
+        )}
+      </Button>
+
+      {/* Mobile Overlay */}
+      {isOpen && (
+        <div
+          className="lg:hidden fixed inset-0 bg-background/80 backdrop-blur-sm z-40"
+          onClick={() => setIsOpen(false)}
+          aria-hidden="true"
+        />
+      )}
+
+      {/* Sidebar */}
+      <div className={`
+        w-64 lg:w-72 shrink-0 space-y-4
+        lg:block
+        fixed lg:sticky top-0 right-0 h-full lg:h-auto
+        bg-background lg:bg-transparent
+        z-50 lg:z-auto
+        p-4 lg:p-0
+        transition-transform duration-300 ease-in-out
+        ${isOpen ? 'translate-x-0' : 'translate-x-full lg:translate-x-0'}
+      `}>
       {/* Filter Header */}
       <Card className="pixel-card p-4">
         <div className="flex items-center justify-between mb-4">
@@ -43,15 +82,27 @@ export function FilterSidebar({ filter, onFilterChange }: FilterSidebarProps) {
               </Badge>
             )}
           </div>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={clearFilters}
-            className="font-mono text-xs hover:glow-accent"
-          >
-            <RotateCcw className="h-3 w-3 mr-1" />
-            Clear
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={clearFilters}
+              className="font-mono text-xs hover:glow-accent"
+              aria-label="Clear all filters"
+            >
+              <RotateCcw className="h-3 w-3 mr-1" />
+              Clear
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setIsOpen(false)}
+              className="lg:hidden"
+              aria-label="Close filters"
+            >
+              <X className="h-4 w-4" />
+            </Button>
+          </div>
         </div>
 
         {/* Category Filter */}
@@ -98,16 +149,16 @@ export function FilterSidebar({ filter, onFilterChange }: FilterSidebarProps) {
 
         {/* Experience Filter */}
         <div className="space-y-2 mb-4">
-          <label className="text-sm font-mono font-semibold text-foreground">Experience</label>
+          <label className="text-sm font-mono font-semibold text-foreground">Usage Frequency</label>
           <Select
             value={filter.experience || 'all'}
             onValueChange={(value) => updateFilter('experience', value)}
           >
             <SelectTrigger className="glow-accent">
-              <SelectValue placeholder="All Levels" />
+              <SelectValue placeholder="All Frequencies" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Levels</SelectItem>
+              <SelectItem value="all">All Frequencies</SelectItem>
               {experienceLevels.map((level) => (
                 <SelectItem key={level} value={level}>
                   {level}
@@ -141,23 +192,24 @@ export function FilterSidebar({ filter, onFilterChange }: FilterSidebarProps) {
         <h3 className="font-pixel text-sm text-primary mb-3">Quick Stats</h3>
         <div className="space-y-2 font-mono text-xs">
           <div className="flex justify-between">
-            <span className="text-muted-foreground">Using Now:</span>
+            <span className="text-muted-foreground">Active:</span>
             <span className="text-primary">8</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-muted-foreground">Learning:</span>
+            <span className="text-muted-foreground">To Check:</span>
             <span className="text-accent">1</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-muted-foreground">Want to Learn:</span>
+            <span className="text-muted-foreground">Favorites:</span>
             <span className="text-chart-4">1</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-muted-foreground">Total Stacks:</span>
+            <span className="text-muted-foreground">Total Sites:</span>
             <span className="text-foreground font-semibold">12</span>
           </div>
         </div>
       </Card>
-    </div>
+      </div>
+    </>
   );
 }

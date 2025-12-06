@@ -26,35 +26,35 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 
 const categoryIcons: Record<string, React.ComponentType<React.SVGProps<SVGSVGElement>>> = {
-  'Frontend': Code,
-  'Backend': Settings,
-  'Database': Database,
-  'Mobile': Smartphone,
-  'Cloud': Cloud,
+  'Development': Code,
   'Design': Palette,
-  'Testing': TestTube,
-  'AI/ML': Brain,
-  'DevOps': Settings,
-  'Blockchain': Blocks,
-  'Gaming': Gamepad2,
+  'Productivity': Settings,
+  'Learning': Brain,
+  'Entertainment': Gamepad2,
+  'Social Media': Smartphone,
+  'News': Database,
+  'Shopping': Cloud,
+  'Finance': TestTube,
+  'Health': Brain,
+  'Travel': Cloud,
   'Other': MoreHorizontal
 };
 
 const statusColors: Record<string, string> = {
-  'Using Now': 'bg-primary text-primary-foreground',
-  'Used Before': 'bg-secondary text-secondary-foreground',
-  'Want to Learn': 'bg-chart-4 text-foreground',
-  'Learning': 'bg-accent text-accent-foreground',
+  'Active': 'bg-primary text-primary-foreground',
+  'Favorites': 'bg-accent text-accent-foreground',
+  'To Check': 'bg-chart-4 text-foreground',
+  'Occasional': 'bg-secondary text-secondary-foreground',
   'Watching': 'bg-chart-2 text-foreground',
   'Archived': 'bg-muted text-muted-foreground'
 };
 
 const experienceColors: Record<string, string> = {
-  'Expert': 'text-chart-1',
-  'Advanced': 'text-primary',
-  'Intermediate': 'text-chart-3',
-  'Beginner': 'text-chart-4',
-  'None': 'text-muted-foreground'
+  'Daily': 'text-chart-1',
+  'Weekly': 'text-primary',
+  'Monthly': 'text-chart-3',
+  'Rarely': 'text-chart-4',
+  'Never Used': 'text-muted-foreground'
 };
 
 interface PageProps {
@@ -86,12 +86,13 @@ export async function generateStaticParams() {
 }
 
 export default async function TechStackPage({ params }: PageProps) {
-  const { slug } = await params;
-  const techStack = getTechStackBySlug(slug);
+  try {
+    const { slug } = await params;
+    const techStack = getTechStackBySlug(slug);
 
-  if (!techStack) {
-    notFound();
-  }
+    if (!techStack) {
+      notFound();
+    }
 
   const IconComponent = categoryIcons[techStack.category] || Code;
 
@@ -122,7 +123,7 @@ export default async function TechStackPage({ params }: PageProps) {
 
       <main className="container max-w-4xl mx-auto px-4 md:px-6 py-6">
         {/* Back Button */}
-        <div className="mb-6">
+        <div className="mb-8">
           <Link href="/">
             <Button variant="outline" className="pixel-border hover:glow transition-all duration-300">
               <ArrowLeft className="h-4 w-4 mr-2" />
@@ -132,7 +133,7 @@ export default async function TechStackPage({ params }: PageProps) {
         </div>
 
         {/* Header Card */}
-        <Card className="pixel-card mb-8">
+        <Card className="pixel-card mb-10">
           <CardHeader>
             <div className="flex items-start gap-6">
               {/* Icon */}
@@ -141,7 +142,7 @@ export default async function TechStackPage({ params }: PageProps) {
               </div>
 
               {/* Title and Meta */}
-              <div className="flex-1 min-w-0">
+              <div className="flex-1 min-w-0 space-y-5">
                 <div className="flex items-start justify-between mb-4">
                   <div>
                     <h1 className="font-pixel text-4xl text-primary mb-2">
@@ -182,7 +183,7 @@ export default async function TechStackPage({ params }: PageProps) {
                   </div>
 
                   <div>
-                    <span className="font-mono text-muted-foreground block mb-1">Experience</span>
+                    <span className="font-mono text-muted-foreground block mb-1">Frequency</span>
                     <span className={`font-mono font-semibold ${experienceColors[techStack.experience]}`}>
                       {techStack.experience}
                     </span>
@@ -204,9 +205,9 @@ export default async function TechStackPage({ params }: PageProps) {
 
                 {/* Tags */}
                 {techStack.tags.length > 0 && (
-                  <div className="mt-4">
-                    <span className="font-mono text-sm text-muted-foreground block mb-2">Tags:</span>
-                    <div className="flex flex-wrap gap-2">
+                  <div className="mt-6">
+                    <span className="font-mono text-sm text-muted-foreground block mb-3">Tags:</span>
+                    <div className="flex flex-wrap gap-3">
                       {techStack.tags.map((tag, index) => (
                         <Badge
                           key={index}
@@ -221,7 +222,7 @@ export default async function TechStackPage({ params }: PageProps) {
                 )}
 
                 {/* Dates */}
-                <div className="flex items-center gap-6 mt-6 text-xs font-mono text-muted-foreground">
+                <div className="flex flex-wrap items-center gap-6 mt-8 text-xs font-mono text-muted-foreground border-t border-border/50 pt-5">
                   <div className="flex items-center gap-2">
                     <Calendar className="h-3 w-3" />
                     <span>Added {formatDate(techStack.dateAdded)}</span>
@@ -245,8 +246,8 @@ export default async function TechStackPage({ params }: PageProps) {
 
         {/* Content */}
         <Card className="pixel-card">
-          <CardContent className="p-8">
-            <div className="prose prose-invert max-w-none">
+          <CardContent className="p-8 md:p-10 space-y-8">
+            <div className="prose prose-invert max-w-none space-y-6">
               <MDXRemote source={techStack.content} components={mdxComponents} />
             </div>
           </CardContent>
@@ -254,4 +255,8 @@ export default async function TechStackPage({ params }: PageProps) {
       </main>
     </div>
   );
+  } catch (error) {
+    console.error('Error loading tech stack:', error);
+    notFound();
+  }
 }

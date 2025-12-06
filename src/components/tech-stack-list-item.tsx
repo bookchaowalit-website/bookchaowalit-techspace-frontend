@@ -27,35 +27,35 @@ interface TechStackListItemProps {
 }
 
 const categoryIcons: Record<string, React.ComponentType<React.SVGProps<SVGSVGElement>>> = {
-  'Frontend': Code,
-  'Backend': Settings,
-  'Database': Database,
-  'Mobile': Smartphone,
-  'Cloud': Cloud,
+  'Development': Code,
   'Design': Palette,
-  'Testing': TestTube,
-  'AI/ML': Brain,
-  'DevOps': Settings,
-  'Blockchain': Blocks,
-  'Gaming': Gamepad2,
+  'Productivity': Settings,
+  'Learning': Brain,
+  'Entertainment': Gamepad2,
+  'Social Media': Smartphone,
+  'News': Database,
+  'Shopping': Cloud,
+  'Finance': TestTube,
+  'Health': Brain,
+  'Travel': Cloud,
   'Other': MoreHorizontal
 };
 
 const statusColors: Record<string, string> = {
-  'Using Now': 'bg-primary text-primary-foreground',
-  'Used Before': 'bg-secondary text-secondary-foreground',
-  'Want to Learn': 'bg-chart-4 text-foreground',
-  'Learning': 'bg-accent text-accent-foreground',
+  'Active': 'bg-primary text-primary-foreground',
+  'Favorites': 'bg-accent text-accent-foreground',
+  'To Check': 'bg-chart-4 text-foreground',
+  'Occasional': 'bg-secondary text-secondary-foreground',
   'Watching': 'bg-chart-2 text-foreground',
   'Archived': 'bg-muted text-muted-foreground'
 };
 
 const experienceColors: Record<string, string> = {
-  'Expert': 'text-chart-1',
-  'Advanced': 'text-primary',
-  'Intermediate': 'text-chart-3',
-  'Beginner': 'text-chart-4',
-  'None': 'text-muted-foreground'
+  'Daily': 'text-chart-1',
+  'Weekly': 'text-primary',
+  'Monthly': 'text-chart-3',
+  'Rarely': 'text-chart-4',
+  'Never Used': 'text-muted-foreground'
 };
 
 export function TechStackListItem({ techStack }: TechStackListItemProps) {
@@ -83,7 +83,7 @@ export function TechStackListItem({ techStack }: TechStackListItemProps) {
   };
 
   return (
-    <Card className="pixel-card hover:glow transition-all duration-300 group">
+    <Card className="pixel-card hover:glow hover:scale-[1.01] transition-all duration-300 group cursor-pointer focus-within:glow">
       <CardContent className="p-6">
         <div className="flex items-start gap-6">
           {/* Icon */}
@@ -94,7 +94,7 @@ export function TechStackListItem({ techStack }: TechStackListItemProps) {
           </div>
 
           {/* Main Content */}
-          <div className="flex-1 min-w-0">
+          <div className="flex-1 min-w-0 space-y-4">
             <div className="flex items-start justify-between mb-3">
               <div className="flex-1 min-w-0">
                 <h3 className="font-pixel text-xl text-foreground group-hover:text-primary transition-colors cursor-pointer mb-1">
@@ -121,16 +121,16 @@ export function TechStackListItem({ techStack }: TechStackListItemProps) {
             </div>
 
             {/* Meta Information Row */}
-            <div className="flex flex-wrap items-center gap-4 mb-4">
-              <Badge variant="outline" className="pixel-border">
+            <div className="flex flex-wrap items-center gap-3 mb-5">
+              <Badge variant="outline" className="pixel-border flex-shrink-0">
                 {techStack.category}
               </Badge>
 
-              <Badge className={`${statusColors[techStack.status]} font-mono text-xs`}>
+              <Badge className={`${statusColors[techStack.status]} font-mono text-xs flex-shrink-0`}>
                 {techStack.status}
               </Badge>
 
-              <span className={`font-mono text-sm font-semibold ${experienceColors[techStack.experience]}`}>
+              <span className={`font-mono text-sm font-semibold ${experienceColors[techStack.experience]} flex-shrink-0`}>
                 {techStack.experience}
               </span>
 
@@ -140,7 +140,7 @@ export function TechStackListItem({ techStack }: TechStackListItemProps) {
                   <div className="flex gap-1">
                     {renderStars(techStack.rating)}
                   </div>
-                  <span className="font-mono text-sm text-muted-foreground">
+                  <span className="font-mono text-sm text-muted-foreground flex-shrink-0">
                     {techStack.rating}/5
                   </span>
                 </div>
@@ -149,7 +149,7 @@ export function TechStackListItem({ techStack }: TechStackListItemProps) {
 
             {/* Tags */}
             {techStack.tags.length > 0 && (
-              <div className="mb-4">
+              <div className="mb-5">
                 <div className="flex flex-wrap gap-2">
                   {techStack.tags.slice(0, 6).map((tag, index) => (
                     <Badge
@@ -170,8 +170,8 @@ export function TechStackListItem({ techStack }: TechStackListItemProps) {
             )}
 
             {/* Footer Information */}
-            <div className="flex items-center justify-between text-xs font-mono text-muted-foreground">
-              <div className="flex items-center gap-4">
+            <div className="flex flex-col gap-4 text-xs font-mono text-muted-foreground border-t border-border pt-4">
+              <div className="flex flex-wrap items-center gap-4">
                 <div className="flex items-center gap-1">
                   <Calendar className="h-3 w-3" />
                   <span>Added {formatDate(techStack.dateAdded)}</span>

@@ -1,5 +1,37 @@
 import { TechStack } from '@/types/tech-stack';
 
+export const categories = [
+  'Development',
+  'Design',
+  'Productivity',
+  'Learning',
+  'Entertainment',
+  'Social Media',
+  'News',
+  'Shopping',
+  'Finance',
+  'Health',
+  'Travel',
+  'Other'
+] as const;
+
+export const statuses = [
+  'Active',
+  'Favorites',
+  'To Check',
+  'Occasional',
+  'Watching',
+  'Archived'
+] as const;
+
+export const experienceLevels = [
+  'Daily',
+  'Weekly',
+  'Monthly',
+  'Rarely',
+  'Never Used'
+] as const;
+
 export const techStacks: TechStack[] = [
   {
     id: 'react',
@@ -189,35 +221,3 @@ export const techStacks: TechStack[] = [
     lastUsed: '2024-11-01'
   }
 ];
-
-export const categories = [
-  'Frontend',
-  'Backend', 
-  'Database',
-  'DevOps',
-  'Mobile',
-  'AI/ML',
-  'Design',
-  'Testing',
-  'Cloud',
-  'Blockchain',
-  'Gaming',
-  'Other'
-] as const;
-
-export const statuses = [
-  'Using Now',
-  'Used Before',
-  'Want to Learn',
-  'Learning',
-  'Watching',
-  'Archived'
-] as const;
-
-export const experienceLevels = [
-  'None',
-  'Beginner',
-  'Intermediate',
-  'Advanced',
-  'Expert'
-] as const;

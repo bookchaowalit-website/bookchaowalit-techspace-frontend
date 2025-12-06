@@ -31,35 +31,35 @@ interface TechStackCardProps {
 }
 
 const categoryIcons: Record<string, React.ComponentType<React.SVGProps<SVGSVGElement>>> = {
-  'Frontend': Code,
-  'Backend': Settings,
-  'Database': Database,
-  'Mobile': Smartphone,
-  'Cloud': Cloud,
+  'Development': Code,
   'Design': Palette,
-  'Testing': TestTube,
-  'AI/ML': Brain,
-  'DevOps': Settings,
-  'Blockchain': Blocks,
-  'Gaming': Gamepad2,
+  'Productivity': Settings,
+  'Learning': Brain,
+  'Entertainment': Gamepad2,
+  'Social Media': Smartphone,
+  'News': Database,
+  'Shopping': Cloud,
+  'Finance': TestTube,
+  'Health': Brain,
+  'Travel': Cloud,
   'Other': MoreHorizontal
 };
 
 const statusColors: Record<string, string> = {
-  'Using Now': 'bg-primary text-primary-foreground',
-  'Used Before': 'bg-secondary text-secondary-foreground',
-  'Want to Learn': 'bg-chart-4 text-foreground',
-  'Learning': 'bg-accent text-accent-foreground',
+  'Active': 'bg-primary text-primary-foreground',
+  'Favorites': 'bg-accent text-accent-foreground',
+  'To Check': 'bg-chart-4 text-foreground',
+  'Occasional': 'bg-secondary text-secondary-foreground',
   'Watching': 'bg-chart-2 text-foreground',
   'Archived': 'bg-muted text-muted-foreground'
 };
 
 const experienceColors: Record<string, string> = {
-  'Expert': 'text-chart-1',
-  'Advanced': 'text-primary',
-  'Intermediate': 'text-chart-3',
-  'Beginner': 'text-chart-4',
-  'None': 'text-muted-foreground'
+  'Daily': 'text-chart-1',
+  'Weekly': 'text-primary',
+  'Monthly': 'text-chart-3',
+  'Rarely': 'text-chart-4',
+  'Never Used': 'text-muted-foreground'
 };
 
 export function TechStackCard({ techStack, onEdit, onDelete }: TechStackCardProps) {
@@ -86,9 +86,9 @@ export function TechStackCard({ techStack, onEdit, onDelete }: TechStackCardProp
   };
 
   return (
-    <Card className="pixel-card hover:glow transition-all duration-300 group">
-      <CardHeader className="pb-3">
-        <div className="flex items-start justify-between">
+    <Card className="pixel-card hover:glow hover:scale-[1.02] transition-all duration-300 group cursor-pointer h-full flex flex-col">
+      <CardHeader className="pb-4">
+        <div className="flex items-start justify-between gap-3">
           <div className="flex items-center space-x-3">
             <div className="p-2 rounded-lg bg-card border border-border">
               <IconComponent className="h-5 w-5 text-primary" />
@@ -138,20 +138,20 @@ export function TechStackCard({ techStack, onEdit, onDelete }: TechStackCardProp
         </div>
       </CardHeader>
 
-      <CardContent className="space-y-4">
+      <CardContent className="space-y-5 flex-1">
         {/* Description */}
-        <p className="text-sm text-muted-foreground line-clamp-2 font-mono">
+        <p className="text-sm text-muted-foreground line-clamp-2 font-mono leading-relaxed">
           {techStack.description}
         </p>
 
         {/* Status and Experience */}
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between gap-3">
           <Badge
-            className={`${statusColors[techStack.status]} font-mono text-xs pixel-border`}
+            className={`${statusColors[techStack.status]} font-mono text-xs pixel-border flex-shrink-0`}
           >
             {techStack.status}
           </Badge>
-          <div className={`text-xs font-mono font-semibold ${experienceColors[techStack.experience]}`}>
+          <div className={`text-xs font-mono font-semibold ${experienceColors[techStack.experience]} flex-shrink-0`}>
             {techStack.experience}
           </div>
         </div>
