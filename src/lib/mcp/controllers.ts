@@ -1,5 +1,5 @@
 import { mcpOpenApi } from './schema';
-import { buildCorsHeaders, requireAuth } from './utils';
+import { buildCorsHeaders, requireAuth, generateETag, cacheHeaders } from './utils';
 import { techStacks } from '../../data/tech-stacks';
 
 export function getDiscovery(_request: Request) {
@@ -29,15 +29,26 @@ export function getStacks(request: Request) {
     if (status) items = items.filter((s) => s.status === status);
 
     const page = items.slice(offset, offset + limit);
+    const body = {
+        total: items.length,
+        limit,
+        offset,
+        items: page,
+    };
+    const etag = generateETag(body);
+
+    const headers = { ...buildCorsHeaders(), ...cacheHeaders(), ETag: etag };
+
+    // Handle conditional requests
+    const ifNone = request.headers.get('if-none-match');
+    if (ifNone && ifNone === etag) {
+        return { status: 304, body: null, headers };
+    }
+
     return {
         status: 200,
-        body: {
-            total: items.length,
-            limit,
-            offset,
-            items: page,
-        },
-        headers: buildCorsHeaders(),
+        body,
+        headers,
     };
 }
 

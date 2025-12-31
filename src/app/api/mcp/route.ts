@@ -81,4 +81,34 @@ const verifyToken = async (req: Request, bearerToken?: string) => {
 
 const authHandler = withMcpAuth(handler, verifyToken, { required: !!process.env.MCP_API_TOKEN, requiredScopes: ['mcp:invoke'], resourceMetadataPath: '/.well-known/oauth-protected-resource' });
 
-export { authHandler as GET, authHandler as POST, authHandler as DELETE };
+import { isRateLimited } from '@/lib/mcp/rateLimiter';
+
+async function rateLimitGuard(req: Request) {
+  const authHeader = req.headers.get('authorization') || '';
+  const bearer = authHeader.startsWith('Bearer ') ? authHeader.slice('Bearer '.length).trim() : undefined;
+  const ip = (req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || 'unknown').split(',')[0].trim();
+  const key = bearer || ip || 'anon';
+  const res = isRateLimited(key, Number(process.env.MCP_RATE_LIMIT || 60), Number(process.env.MCP_RATE_WINDOW_MS || 60000));
+  if (!res.ok) {
+    return new Response(JSON.stringify({ error: 'Too Many Requests' }), { status: 429, headers: { 'Content-Type': 'application/json', 'Retry-After': String(Math.ceil((res.reset - Date.now()) / 1000)) } });
+  }
+  return null;
+}
+
+export async function GET(request: Request) {
+  const rl = await rateLimitGuard(request);
+  if (rl) return rl;
+  return await (authHandler as any).GET(request);
+}
+
+export async function POST(request: Request) {
+  const rl = await rateLimitGuard(request);
+  if (rl) return rl;
+  return await (authHandler as any).POST(request);
+}
+
+export async function DELETE(request: Request) {
+  const rl = await rateLimitGuard(request);
+  if (rl) return rl;
+  return await (authHandler as any).DELETE(request);
+}
