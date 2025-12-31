@@ -7,7 +7,7 @@ export interface Website {
   url?: string;
   imageUrl?: string;
   tags: string[];
-  experience: UsageFrequency;
+  experience: ExperienceLevel;
   rating: number;
   notes?: string;
   dateAdded: string;
@@ -16,6 +16,11 @@ export interface Website {
 
 export type WebsiteCategory =
   | 'Development'
+  | 'Frontend'
+  | 'Backend'
+  | 'Database'
+  | 'DevOps'
+  | 'AI/ML'
   | 'Design'
   | 'Productivity'
   | 'Learning'
@@ -30,23 +35,28 @@ export type WebsiteCategory =
 
 export type WebsiteStatus =
   | 'Active'
+  | 'Using Now'
   | 'Favorites'
   | 'To Check'
   | 'Occasional'
   | 'Watching'
+  | 'Learned'
+  | 'Learning'
+  | 'Want to Learn'
   | 'Archived';
 
-export type UsageFrequency =
-  | 'Daily'
-  | 'Weekly'
-  | 'Monthly'
-  | 'Rarely'
-  | 'Never Used';
+export type ExperienceLevel =
+  | 'Advanced'
+  | 'Intermediate'
+  | 'Beginner'
+  | 'None';
+
+export type UsageFrequency = ExperienceLevel; // deprecated alias for backward compatibility
 
 export interface WebsiteFilter {
   category?: WebsiteCategory;
   status?: WebsiteStatus;
-  experience?: UsageFrequency;
+  experience?: ExperienceLevel;
   search?: string;
   tags?: string[];
   minRating?: number;
@@ -56,5 +66,4 @@ export interface WebsiteFilter {
 export type TechStack = Website;
 export type TechCategory = WebsiteCategory;
 export type TechStatus = WebsiteStatus;
-export type ExperienceLevel = UsageFrequency;
 export type TechFilter = WebsiteFilter;

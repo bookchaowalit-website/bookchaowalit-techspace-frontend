@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Search, Terminal, Zap, X } from 'lucide-react';
+import { Search, Terminal, X } from 'lucide-react';
 import { useState } from 'react';
 
 interface HeaderProps {

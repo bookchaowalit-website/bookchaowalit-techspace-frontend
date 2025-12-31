@@ -149,16 +149,16 @@ export function FilterSidebar({ filter, onFilterChange }: FilterSidebarProps) {
 
         {/* Experience Filter */}
         <div className="space-y-2 mb-4">
-          <label className="text-sm font-mono font-semibold text-foreground">Usage Frequency</label>
+          <label className="text-sm font-mono font-semibold text-foreground">Experience</label>
           <Select
             value={filter.experience || 'all'}
             onValueChange={(value) => updateFilter('experience', value)}
           >
             <SelectTrigger className="hover:shadow-sm">
-              <SelectValue placeholder="All Frequencies" />
+              <SelectValue placeholder="All Levels" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Frequencies</SelectItem>
+              <SelectItem value="all">All Levels</SelectItem>
               {experienceLevels.map((level) => (
                 <SelectItem key={level} value={level}>
                   {level}

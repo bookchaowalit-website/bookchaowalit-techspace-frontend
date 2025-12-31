@@ -12,11 +12,11 @@ interface CodeBlockProps {
   showLineNumbers?: boolean;
 }
 
-export function CodeBlock({ 
-  language = 'text', 
-  children, 
+export function CodeBlock({
+  language = 'text',
+  children,
   title,
-  showLineNumbers = false 
+  showLineNumbers = false
 }: CodeBlockProps) {
   const [copied, setCopied] = useState(false);
 
@@ -55,7 +55,7 @@ export function CodeBlock({
           </Button>
         </div>
       )}
-      
+
       {/* Code Content */}
       <div className="relative overflow-x-auto">
         <pre className="p-4 text-sm font-mono leading-relaxed">

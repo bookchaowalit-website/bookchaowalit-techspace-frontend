@@ -59,7 +59,7 @@ export function TechStackClientPage({ techStacks, isLoading = false }: TechStack
 
       return true;
     });
-  }, [filter, techStacks]);
+  }, [filter, techStacks, searchTerm]);
 
   return (
     <div className="min-h-screen bg-background">
