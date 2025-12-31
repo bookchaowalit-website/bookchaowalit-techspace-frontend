@@ -30,6 +30,46 @@ const handler = createMcpHandler((server) => {
       return { content: [{ type: 'json', json: s }] };
     },
   );
+
+  server.tool(
+    'search_stacks',
+    'Search stacks by query (name/description/tags)',
+    { q: z.string().min(1), field: z.enum(['name','description','tags']).optional(), limit: z.number().int().min(1).optional() },
+    async ({ q, field, limit }) => {
+      const r = (await import('@/lib/mcp/tools')).searchStacks({ q: q as string, field: field as any, limit: limit as any });
+      return { content: [{ type: 'json', json: r }] };
+    },
+  );
+
+  server.tool(
+    'site_summary',
+    'Return summary info about the site and stacks',
+    {},
+    async () => {
+      const r = (await import('@/lib/mcp/tools')).siteSummary();
+      return { content: [{ type: 'json', json: r }] };
+    },
+  );
+
+  server.tool(
+    'page_summary',
+    'Return a short summary for a content page',
+    { path: z.string(), excerptLength: z.number().int().min(20).optional() },
+    async ({ path: p, excerptLength }) => {
+      const r = (await import('@/lib/mcp/tools')).pageSummary(p as string, excerptLength as any);
+      return { content: [{ type: 'json', json: r }] };
+    },
+  );
+
+  server.tool(
+    'render_stack_markdown',
+    'Render a markdown summary for a stack id',
+    { id: z.string() },
+    async ({ id }) => {
+      const md = (await import('@/lib/mcp/tools')).renderStackMarkdown(id as string);
+      return { content: [{ type: 'text', text: md }] };
+    },
+  );
 });
 
 // Simple token-based auth wrapper using MCP_API_TOKEN

@@ -52,6 +52,10 @@ This project also provides an MCP Server adapter at `/api/mcp` using `mcp-handle
   - `roll_dice` — params: `{ sides: number }`
   - `list_stacks` — params: `{ category?: string, limit?: number, offset?: number }`
   - `get_stack` — params: `{ id: string }`
+  - `search_stacks` — params: `{ q: string, field?: 'name' | 'description' | 'tags', limit?: number }`
+  - `site_summary` — params: `{}`
+  - `page_summary` — params: `{ path: string, excerptLength?: number }`
+  - `render_stack_markdown` — params: `{ id: string }`
 
 - Token auth: set `MCP_API_TOKEN` to require a Bearer token for tool invocation.
 
