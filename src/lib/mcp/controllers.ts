@@ -1,9 +1,8 @@
-import { NextResponse } from 'next/server';
 import { mcpOpenApi } from './schema';
 import { buildCorsHeaders, requireAuth } from './utils';
 import { techStacks } from '../../data/tech-stacks';
 
-export function getDiscovery(request: Request) {
+export function getDiscovery(_request: Request) {
     const body = {
         name: 'tech-space MCP',
         version: process.env.npm_package_version || 'unspecified',
@@ -13,7 +12,7 @@ export function getDiscovery(request: Request) {
     return { status: 200, body, headers: buildCorsHeaders() };
 }
 
-export function getSchema(request: Request) {
+export function getSchema(_request: Request) {
     return { status: 200, body: mcpOpenApi, headers: buildCorsHeaders() };
 }
 
@@ -42,12 +41,12 @@ export function getStacks(request: Request) {
     };
 }
 
-export function getHealth(request: Request) {
+export function getHealth(_request: Request) {
     return { status: 200, body: { status: 'ok', uptime: process.uptime(), ts: new Date().toISOString() }, headers: buildCorsHeaders() };
 }
 
-export function authGuard(request: Request) {
-    const check = requireAuth(request);
+export function authGuard(_request: Request) {
+    const check = requireAuth(_request);
     if (!check.ok) {
         return { status: 401, body: { error: 'Unauthorized', reason: check.reason }, headers: buildCorsHeaders() };
     }

@@ -28,7 +28,8 @@ describe('MCP controllers', () => {
         if (cat) {
             const r2 = getStacks(new Request(`http://localhost/?category=${encodeURIComponent(cat)}`));
             expect(r2.status).toBe(200);
-            expect(r2.body.items.every((i: any) => i.category === cat)).toBe(true);
+            // typed category to satisfy ESLint rule against `any`
+            expect(r2.body.items.every((i: { category?: string }) => i.category === cat)).toBe(true);
         }
     });
 
