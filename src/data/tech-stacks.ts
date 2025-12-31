@@ -2,6 +2,11 @@ import { TechStack } from '@/types/tech-stack';
 
 export const categories = [
   'Development',
+  'Frontend',
+  'Backend',
+  'Database',
+  'DevOps',
+  'AI/ML',
   'Design',
   'Productivity',
   'Learning',
@@ -17,19 +22,21 @@ export const categories = [
 
 export const statuses = [
   'Active',
+  'Using Now',
   'Favorites',
   'To Check',
   'Occasional',
   'Watching',
+  'Learning',
+  'Want to Learn',
   'Archived'
 ] as const;
 
 export const experienceLevels = [
-  'Daily',
-  'Weekly',
-  'Monthly',
-  'Rarely',
-  'Never Used'
+  'Advanced',
+  'Intermediate',
+  'Beginner',
+  'None'
 ] as const;
 
 export const techStacks: TechStack[] = [

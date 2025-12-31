@@ -19,7 +19,6 @@ import { Button } from '@/components/ui/button';
   TestTube,
   Settings,
   Brain,
-  Blocks,
   Gamepad2,
   MoreHorizontal
 } from 'lucide-react';

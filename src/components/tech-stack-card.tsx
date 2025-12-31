@@ -19,7 +19,6 @@ import {
   TestTube,
   Settings,
   Brain,
-  Blocks,
   Gamepad2,
   MoreHorizontal
 } from 'lucide-react';
