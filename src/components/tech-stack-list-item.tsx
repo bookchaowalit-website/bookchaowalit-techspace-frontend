@@ -83,7 +83,7 @@ export function TechStackListItem({ techStack }: TechStackListItemProps) {
   };
 
   return (
-    <Card className="pixel-card hover:glow hover:scale-[1.01] transition-all duration-300 group cursor-pointer focus-within:glow">
+    <Card className="condensed-card hover:shadow-sm hover:scale-[1.01] transition-transform duration-200 group cursor-pointer">
       <CardContent className="p-6">
         <div className="flex items-start gap-6">
           {/* Icon */}
@@ -97,7 +97,7 @@ export function TechStackListItem({ techStack }: TechStackListItemProps) {
           <div className="flex-1 min-w-0 space-y-4">
             <div className="flex items-start justify-between mb-3">
               <div className="flex-1 min-w-0">
-                <h3 className="font-pixel text-xl text-foreground group-hover:text-primary transition-colors cursor-pointer mb-1">
+                <h3 className="text-xl font-semibold text-foreground group-hover:text-primary transition-colors cursor-pointer mb-1">
                   {techStack.name}
                 </h3>
                 <p className="text-muted-foreground font-mono text-sm leading-relaxed mb-3">
@@ -107,22 +107,20 @@ export function TechStackListItem({ techStack }: TechStackListItemProps) {
 
               {techStack.url && (
                 <Button
-                  asChild
                   variant="outline"
                   size="sm"
-                  className="flex-shrink-0 ml-4 hover:glow transition-all duration-300"
+                  className="flex-shrink-0 ml-4 hover:shadow-sm transition"
+                  onClick={() => window.open(techStack.url, '_blank')}
                 >
-                  <a href={techStack.url} target="_blank" rel="noopener noreferrer">
-                    <ExternalLink className="h-4 w-4 mr-2" />
-                    Visit
-                  </a>
+                  <ExternalLink className="h-4 w-4 mr-2" />
+                  Visit
                 </Button>
               )}
             </div>
 
             {/* Meta Information Row */}
             <div className="flex flex-wrap items-center gap-3 mb-5">
-              <Badge variant="outline" className="pixel-border flex-shrink-0">
+              <Badge variant="outline" className="subtle-border flex-shrink-0">
                 {techStack.category}
               </Badge>
 

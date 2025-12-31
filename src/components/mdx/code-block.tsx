@@ -29,13 +29,13 @@ export function CodeBlock({
   const lines = children.trim().split('\n');
 
   return (
-    <Card className="pixel-card overflow-hidden mb-6">
+    <Card className="condensed-card overflow-hidden mb-6">
       {/* Header */}
       {(title || language) && (
         <div className="flex items-center justify-between px-4 py-2 bg-muted border-b">
           <div className="flex items-center space-x-2">
             {title && (
-              <span className="font-pixel text-sm text-foreground">{title}</span>
+              <span className="text-sm font-semibold text-foreground">{title}</span>
             )}
             <span className="font-mono text-xs text-muted-foreground uppercase">
               {language}
@@ -45,7 +45,7 @@ export function CodeBlock({
             variant="ghost"
             size="sm"
             onClick={handleCopy}
-            className="h-8 w-8 p-0 hover:glow transition-all duration-300"
+            className="h-8 w-8 p-0 hover:shadow-sm transition"
           >
             {copied ? (
               <Check className="h-3 w-3 text-primary" />

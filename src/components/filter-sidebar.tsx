@@ -37,14 +37,14 @@ export function FilterSidebar({ filter, onFilterChange }: FilterSidebarProps) {
       {/* Mobile Filter Button */}
       <Button
         variant="outline"
-        className="lg:hidden fixed bottom-4 right-4 z-40 pixel-border glow shadow-lg"
+        className="lg:hidden fixed bottom-4 right-4 z-40 subtle-border shadow-lg bg-card"
         onClick={() => setIsOpen(!isOpen)}
         aria-label="Toggle filters"
       >
         <Filter className="h-4 w-4 mr-2" />
         Filters
         {activeFiltersCount > 0 && (
-          <Badge variant="secondary" className="ml-2 pixel-border">
+          <Badge variant="secondary" className="ml-2 subtle-border">
             {activeFiltersCount}
           </Badge>
         )}
@@ -71,13 +71,13 @@ export function FilterSidebar({ filter, onFilterChange }: FilterSidebarProps) {
         ${isOpen ? 'translate-x-0' : 'translate-x-full lg:translate-x-0'}
       `}>
       {/* Filter Header */}
-      <Card className="pixel-card p-4">
+      <Card className="condensed-card p-4">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center space-x-2">
             <Filter className="h-5 w-5 text-primary" />
-            <h2 className="font-pixel text-lg text-primary">Filters</h2>
+            <h2 className="text-lg font-semibold text-primary">Filters</h2>
             {activeFiltersCount > 0 && (
-              <Badge variant="secondary" className="pixel-border">
+              <Badge variant="secondary" className="subtle-border">
                 {activeFiltersCount}
               </Badge>
             )}
@@ -87,7 +87,7 @@ export function FilterSidebar({ filter, onFilterChange }: FilterSidebarProps) {
               variant="ghost"
               size="sm"
               onClick={clearFilters}
-              className="font-mono text-xs hover:glow-accent"
+              className="font-mono text-xs hover:shadow-sm"
               aria-label="Clear all filters"
             >
               <RotateCcw className="h-3 w-3 mr-1" />
@@ -112,7 +112,7 @@ export function FilterSidebar({ filter, onFilterChange }: FilterSidebarProps) {
             value={filter.category || 'all'}
             onValueChange={(value) => updateFilter('category', value)}
           >
-            <SelectTrigger className="glow-accent">
+            <SelectTrigger className="hover:shadow-sm">
               <SelectValue placeholder="All Categories" />
             </SelectTrigger>
             <SelectContent>
@@ -133,7 +133,7 @@ export function FilterSidebar({ filter, onFilterChange }: FilterSidebarProps) {
             value={filter.status || 'all'}
             onValueChange={(value) => updateFilter('status', value)}
           >
-            <SelectTrigger className="glow-accent">
+            <SelectTrigger className="hover:shadow-sm">
               <SelectValue placeholder="All Statuses" />
             </SelectTrigger>
             <SelectContent>
@@ -154,7 +154,7 @@ export function FilterSidebar({ filter, onFilterChange }: FilterSidebarProps) {
             value={filter.experience || 'all'}
             onValueChange={(value) => updateFilter('experience', value)}
           >
-            <SelectTrigger className="glow-accent">
+            <SelectTrigger className="hover:shadow-sm">
               <SelectValue placeholder="All Frequencies" />
             </SelectTrigger>
             <SelectContent>
@@ -178,7 +178,7 @@ export function FilterSidebar({ filter, onFilterChange }: FilterSidebarProps) {
                 variant={filter.minRating === rating ? "default" : "outline"}
                 size="sm"
                 onClick={() => updateFilter('minRating', filter.minRating === rating ? undefined : rating)}
-                className="p-1 h-8 w-8 hover:glow transition-all duration-300"
+                className="p-1 h-8 w-8 hover:shadow-sm transition"
               >
                 <Star className={`h-3 w-3 ${filter.minRating === rating ? 'fill-current' : ''}`} />
               </Button>
@@ -188,8 +188,8 @@ export function FilterSidebar({ filter, onFilterChange }: FilterSidebarProps) {
       </Card>
 
       {/* Quick Stats */}
-      <Card className="pixel-card p-4 tech-grid">
-        <h3 className="font-pixel text-sm text-primary mb-3">Quick Stats</h3>
+      <Card className="p-4">
+        <h3 className="text-sm font-semibold text-primary mb-3">Quick Stats</h3>
         <div className="space-y-2 font-mono text-xs">
           <div className="flex justify-between">
             <span className="text-muted-foreground">Active:</span>

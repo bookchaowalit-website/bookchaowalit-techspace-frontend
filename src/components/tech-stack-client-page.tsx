@@ -62,7 +62,7 @@ export function TechStackClientPage({ techStacks, isLoading = false }: TechStack
   }, [filter, techStacks]);
 
   return (
-    <div className="min-h-screen bg-background tech-grid scanlines">
+    <div className="min-h-screen bg-background">
       <Header searchTerm={searchTerm} onSearchChange={setSearchTerm} />
 
       <main className="container max-w-7xl mx-auto px-4 md:px-6 py-6 pb-20 lg:pb-6">
@@ -75,7 +75,7 @@ export function TechStackClientPage({ techStacks, isLoading = false }: TechStack
             {/* Header Actions */}
             <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between md:gap-6">
               <div className="space-y-1">
-                <h1 className="font-pixel text-2xl text-primary">
+                <h1 className="text-2xl font-semibold text-primary">
                   Website Collection
                 </h1>
                 <p className="text-muted-foreground font-mono text-sm">
@@ -88,7 +88,7 @@ export function TechStackClientPage({ techStacks, isLoading = false }: TechStack
                   variant={viewMode === 'grid' ? 'default' : 'outline'}
                   size="sm"
                   onClick={() => setViewMode('grid')}
-                  className="hover:glow transition-all duration-300"
+                  className="hover:shadow-sm transition"
                 >
                   <GridIcon className="h-4 w-4" />
                 </Button>
@@ -96,7 +96,7 @@ export function TechStackClientPage({ techStacks, isLoading = false }: TechStack
                   variant={viewMode === 'list' ? 'default' : 'outline'}
                   size="sm"
                   onClick={() => setViewMode('list')}
-                  className="hover:glow transition-all duration-300"
+                  className="hover:shadow-sm transition"
                 >
                   <ListIcon className="h-4 w-4" />
                 </Button>
@@ -147,7 +147,7 @@ export function TechStackClientPage({ techStacks, isLoading = false }: TechStack
             ) : (
               <div className="text-center py-12">
                 <div className="text-6xl mb-4">🔖</div>
-                <h3 className="font-pixel text-lg text-muted-foreground mb-2">
+                <h3 className="text-lg font-semibold text-muted-foreground mb-2">
                   No websites found
                 </h3>
                 <p className="text-sm text-muted-foreground font-mono">

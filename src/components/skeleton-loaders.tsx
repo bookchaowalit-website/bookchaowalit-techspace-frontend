@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card';
 
 export function TechStackCardSkeleton() {
   return (
-    <Card className="pixel-card">
+    <Card className="condensed-card">
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between">
           <div className="flex items-center space-x-3">
@@ -53,7 +53,7 @@ export function TechStackCardSkeleton() {
 
 export function TechStackListItemSkeleton() {
   return (
-    <Card className="pixel-card">
+    <Card className="condensed-card">
       <CardContent className="p-6">
         <div className="flex items-start gap-6">
           <div className="flex-shrink-0">

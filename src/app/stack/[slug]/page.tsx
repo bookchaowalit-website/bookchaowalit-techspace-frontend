@@ -65,9 +65,9 @@ interface PageProps {
 
 // MDX Components for rich content
 const mdxComponents = {
-  h1: (props: React.HTMLAttributes<HTMLHeadingElement>) => <h1 className="font-pixel text-3xl text-primary mb-6" {...props} />,
-  h2: (props: React.HTMLAttributes<HTMLHeadingElement>) => <h2 className="font-pixel text-2xl text-primary mt-8 mb-4" {...props} />,
-  h3: (props: React.HTMLAttributes<HTMLHeadingElement>) => <h3 className="font-pixel text-xl text-primary mt-6 mb-3" {...props} />,
+  h1: (props: React.HTMLAttributes<HTMLHeadingElement>) => <h1 className="text-3xl font-semibold text-primary mb-6" {...props} />,
+  h2: (props: React.HTMLAttributes<HTMLHeadingElement>) => <h2 className="text-2xl font-semibold text-primary mt-8 mb-4" {...props} />,
+  h3: (props: React.HTMLAttributes<HTMLHeadingElement>) => <h3 className="text-xl font-semibold text-primary mt-6 mb-3" {...props} />,
   p: (props: React.HTMLAttributes<HTMLParagraphElement>) => <p className="font-mono text-sm text-muted-foreground leading-relaxed mb-4" {...props} />,
   ul: (props: React.HTMLAttributes<HTMLUListElement>) => <ul className="font-mono text-sm text-muted-foreground mb-4 pl-6" {...props} />,
   ol: (props: React.HTMLAttributes<HTMLOListElement>) => <ol className="font-mono text-sm text-muted-foreground mb-4 pl-6 list-decimal" {...props} />,
@@ -118,14 +118,14 @@ export default async function TechStackPage({ params }: PageProps) {
   };
 
   return (
-    <div className="min-h-screen bg-background tech-grid scanlines">
+    <div className="min-h-screen bg-background">
       <Header />
 
       <main className="container max-w-4xl mx-auto px-4 md:px-6 py-6">
         {/* Back Button */}
         <div className="mb-8">
           <Link href="/">
-            <Button variant="outline" className="pixel-border hover:glow transition-all duration-300">
+            <Button variant="outline" className="subtle-border hover:shadow-sm transition">
               <ArrowLeft className="h-4 w-4 mr-2" />
               <span className="font-mono">Back to Library</span>
             </Button>
@@ -133,7 +133,7 @@ export default async function TechStackPage({ params }: PageProps) {
         </div>
 
         {/* Header Card */}
-        <Card className="pixel-card mb-10">
+        <Card className="condensed-card mb-10">
           <CardHeader>
             <div className="flex items-start gap-6">
               {/* Icon */}
@@ -145,7 +145,7 @@ export default async function TechStackPage({ params }: PageProps) {
               <div className="flex-1 min-w-0 space-y-5">
                 <div className="flex items-start justify-between mb-4">
                   <div>
-                    <h1 className="font-pixel text-4xl text-primary mb-2">
+                    <h1 className="text-4xl font-semibold text-primary mb-2">
                       {techStack.name}
                     </h1>
                     <p className="font-mono text-lg text-muted-foreground">
@@ -156,7 +156,7 @@ export default async function TechStackPage({ params }: PageProps) {
                   {techStack.url && (
                     <Button
                       asChild
-                      className="glow hover:glow-accent transition-all duration-300"
+                      className="hover:shadow-sm transition"
                     >
                       <a href={techStack.url} target="_blank" rel="noopener noreferrer">
                         <ExternalLink className="h-4 w-4 mr-2" />
@@ -170,7 +170,7 @@ export default async function TechStackPage({ params }: PageProps) {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
                   <div>
                     <span className="font-mono text-muted-foreground block mb-1">Category</span>
-                    <Badge variant="outline" className="pixel-border">
+                    <Badge variant="outline" className="subtle-border">
                       {techStack.category}
                     </Badge>
                   </div>
@@ -245,7 +245,7 @@ export default async function TechStackPage({ params }: PageProps) {
         </Card>
 
         {/* Content */}
-        <Card className="pixel-card">
+        <Card className="condensed-card">
           <CardContent className="p-8 md:p-10 space-y-8">
             <div className="prose prose-invert max-w-none space-y-6">
               <MDXRemote source={techStack.content} components={mdxComponents} />

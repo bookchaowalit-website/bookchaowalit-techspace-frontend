@@ -86,7 +86,7 @@ export function TechStackCard({ techStack, onEdit, onDelete }: TechStackCardProp
   };
 
   return (
-    <Card className="pixel-card hover:glow hover:scale-[1.02] transition-all duration-300 group cursor-pointer h-full flex flex-col">
+    <Card className="condensed-card hover:shadow-sm hover:scale-[1.02] transition-transform duration-200 group cursor-pointer h-full flex flex-col">
       <CardHeader className="pb-4">
         <div className="flex items-start justify-between gap-3">
           <div className="flex items-center space-x-3">
@@ -94,7 +94,7 @@ export function TechStackCard({ techStack, onEdit, onDelete }: TechStackCardProp
               <IconComponent className="h-5 w-5 text-primary" />
             </div>
             <div>
-              <h3 className="font-pixel text-lg text-foreground group-hover:text-primary transition-colors">
+              <h3 className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors">
                 {techStack.name}
               </h3>
               <p className="text-sm text-muted-foreground font-mono">
@@ -147,7 +147,7 @@ export function TechStackCard({ techStack, onEdit, onDelete }: TechStackCardProp
         {/* Status and Experience */}
         <div className="flex items-center justify-between gap-3">
           <Badge
-            className={`${statusColors[techStack.status]} font-mono text-xs pixel-border flex-shrink-0`}
+            className={`${statusColors[techStack.status]} font-mono text-xs subtle-border flex-shrink-0`}
           >
             {techStack.status}
           </Badge>

@@ -18,14 +18,13 @@ export function Header({ searchTerm = '', onSearchChange }: HeaderProps) {
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container max-w-7xl mx-auto flex h-16 items-center justify-between gap-4 px-4 md:px-6">
         {/* Logo */}
-        <Link href="/" className="flex items-center space-x-2 hover:opacity-80 transition-opacity cursor-pointer">
+        <Link href="/" className="flex items-center space-x-3 hover:opacity-90 transition-opacity cursor-pointer">
           <div className="relative">
-            <Terminal className="h-8 w-8 text-primary" />
-            <Zap className="absolute -top-1 -right-1 h-4 w-4 text-accent animate-pulse" />
+            <Terminal className="h-7 w-7 text-primary" />
           </div>
           <div>
-            <h1 className="font-pixel text-xl text-primary">Web Space</h1>
-            <p className="text-xs text-muted-foreground font-mono">Your Website Collection</p>
+            <h1 className="text-lg font-semibold text-foreground">Web Space</h1>
+            <p className="text-sm text-muted-foreground">Your Website Collection</p>
           </div>
         </Link>
 
@@ -38,7 +37,7 @@ export function Header({ searchTerm = '', onSearchChange }: HeaderProps) {
               placeholder="Search websites..."
               value={searchTerm}
               onChange={(e) => onSearchChange?.(e.target.value)}
-              className="pl-9 pr-9 bg-card border-border glow-accent focus:glow transition-all duration-300"
+              className="pl-9 pr-9"
               aria-label="Search websites"
             />
             {searchTerm && (
@@ -69,16 +68,16 @@ export function Header({ searchTerm = '', onSearchChange }: HeaderProps) {
           <Button
             variant="outline"
             size="sm"
-            className="pixel-border hover:glow transition-all duration-300"
+            className="subtle-border text-sm"
             aria-label="Add new website"
           >
-            <span className="font-mono text-xs hidden sm:inline">Add Website</span>
-            <span className="font-mono text-xs sm:hidden">Add</span>
+            <span className="text-sm hidden sm:inline">Add Website</span>
+            <span className="text-sm sm:hidden">Add</span>
           </Button>
           <Button
             variant="default"
             size="sm"
-            className="bg-primary hover:bg-primary/90 glow font-mono text-xs hidden sm:flex"
+            className="hidden sm:flex text-sm font-medium"
             aria-label="Export collection"
           >
             Export
@@ -96,7 +95,7 @@ export function Header({ searchTerm = '', onSearchChange }: HeaderProps) {
               placeholder="Search websites..."
               value={searchTerm}
               onChange={(e) => onSearchChange?.(e.target.value)}
-              className="pl-9 pr-9 bg-card border-border glow-accent focus:glow transition-all duration-300"
+              className="pl-9 pr-9"
               aria-label="Search websites"
               autoFocus
             />

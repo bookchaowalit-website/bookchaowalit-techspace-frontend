@@ -54,13 +54,13 @@ interface DefaultErrorFallbackProps {
 
 export function DefaultErrorFallback({ error, resetError }: DefaultErrorFallbackProps) {
   return (
-    <div className="min-h-screen bg-background tech-grid scanlines flex items-center justify-center p-4">
-      <Card className="pixel-card max-w-md w-full">
+    <div className="min-h-screen bg-background flex items-center justify-center p-4">
+      <Card className="condensed-card max-w-md w-full">
         <CardHeader className="text-center">
           <div className="mx-auto mb-4 p-3 rounded-full bg-destructive/10">
             <AlertTriangle className="h-8 w-8 text-destructive" />
           </div>
-          <h2 className="font-pixel text-xl text-primary">Oops! Something went wrong</h2>
+          <h2 className="text-xl font-semibold text-primary">Oops! Something went wrong</h2>
         </CardHeader>
         <CardContent className="space-y-4">
           <p className="text-muted-foreground font-mono text-sm text-center">
@@ -77,7 +77,7 @@ export function DefaultErrorFallback({ error, resetError }: DefaultErrorFallback
           <div className="flex gap-2">
             <Button
               onClick={resetError}
-              className="flex-1 glow hover:glow-accent transition-all duration-300"
+              className="flex-1 hover:shadow-sm transition"
             >
               <RefreshCw className="h-4 w-4 mr-2" />
               Try Again
@@ -85,7 +85,7 @@ export function DefaultErrorFallback({ error, resetError }: DefaultErrorFallback
             <Button
               variant="outline"
               onClick={() => window.location.reload()}
-              className="flex-1 pixel-border hover:glow transition-all duration-300"
+              className="flex-1 subtle-border hover:shadow-sm transition"
             >
               Refresh Page
             </Button>
