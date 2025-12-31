@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getHealth } from '../../../../lib/mcp/controllers';
+import { getHealth } from '@/lib/mcp/controllers';
 
 export async function GET(request: Request) {
     const res = getHealth(request);

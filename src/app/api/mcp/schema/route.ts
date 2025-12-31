@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getSchema, authGuard } from '../../../../lib/mcp/controllers';
+import { getSchema, authGuard } from '@/lib/mcp/controllers';
 
 export async function GET(request: Request) {
     const guarded = authGuard(request);
