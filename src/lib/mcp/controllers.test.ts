@@ -20,16 +20,23 @@ describe('MCP controllers', () => {
         const url = 'http://localhost/?limit=2&offset=0';
         const res = getStacks(new Request(url));
         expect(res.status).toBe(200);
-        expect(res.body.items.length).toBeLessThanOrEqual(2);
-        expect(res.body.total).toBeGreaterThanOrEqual(res.body.items.length);
+        // getStacks' return type allows `body: null` for its 304 branch —
+        // this request has no conditional-cache headers so it always hits
+        // the 200 branch with real data; assert that explicitly rather
+        // than just casting, so a real regression would still fail loudly.
+        expect(res.body).not.toBeNull();
+        const body = res.body!;
+        expect(body.items.length).toBeLessThanOrEqual(2);
+        expect(body.total).toBeGreaterThanOrEqual(body.items.length);
 
         // category filter
         const cat = techStacks.find((t) => t.category === 'AI/ML')?.category;
         if (cat) {
             const r2 = getStacks(new Request(`http://localhost/?category=${encodeURIComponent(cat)}`));
             expect(r2.status).toBe(200);
+            expect(r2.body).not.toBeNull();
             // typed category to satisfy ESLint rule against `any`
-            expect(r2.body.items.every((i: { category?: string }) => i.category === cat)).toBe(true);
+            expect(r2.body!.items.every((i: { category?: string }) => i.category === cat)).toBe(true);
         }
     });
 

@@ -47,7 +47,11 @@ describe('MCP client', () => {
         const fn = vi.fn().mockResolvedValue({ ok: true, status: 200, statusText: 'OK', json: async () => body });
         globalThis.fetch = fn as unknown as typeof fetch;
         await fetchDiscovery(undefined, 's3cr3t');
-        const call = (fn as unknown as { mock: Array<[string, Record<string, unknown> | undefined]> }).mock[0];
+        // vitest's call history lives under `.mock.calls`, not directly on
+        // `.mock` — this was indexing `.mock[0]` (undefined) instead of
+        // `.mock.calls[0]`, so the assertion below never actually ran
+        // against real call data. The client itself was already correct.
+        const call = (fn as unknown as { mock: { calls: Array<[string, Record<string, unknown> | undefined]> } }).mock.calls[0];
         const calledInit = call[1];
         expect((calledInit?.headers as Record<string, string>)?.Authorization).toBe('Bearer s3cr3t');
     });

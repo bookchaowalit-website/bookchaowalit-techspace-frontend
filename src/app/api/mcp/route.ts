@@ -4,10 +4,17 @@ import { rollDice, listStacks, getStack, searchStacks, siteSummary, pageSummary,
 
 const handler = createMcpHandler((server) => {
     server.tool(
+        'roll_dice',
+        { sides: z.number().int().min(2) },
+        { title: 'Roll a die with the given number of sides' },
+        async ({ sides }: { sides: number }) => rollDice(sides),
+    );
+
+    server.tool(
         'list_stacks',
         { category: z.string().optional(), limit: z.number().int().min(1).optional(), offset: z.number().int().min(0).optional() },
         { title: 'List tech stacks (supports category)' },
-        async ({ category, limit, offset }) => {
+        async ({ category, limit, offset }: { category?: string; limit?: number; offset?: number }) => {
             const res = listStacks({ category, limit, offset });
             return { content: [{ type: 'text' as const, text: JSON.stringify(res) }] };
         },
@@ -17,7 +24,7 @@ const handler = createMcpHandler((server) => {
         'get_stack',
         { id: z.string() },
         { title: 'Get a single tech stack by id' },
-        async ({ id }) => {
+        async ({ id }: { id: string }) => {
             const s = getStack(id as string);
             return { content: [{ type: 'text' as const, text: JSON.stringify(s) }] };
         },
@@ -27,7 +34,7 @@ const handler = createMcpHandler((server) => {
         'search_stacks',
         { q: z.string().min(1), field: z.enum(['name', 'description', 'tags']).optional(), limit: z.number().int().min(1).optional() },
         { title: 'Search stacks by query (name/description/tags)' },
-        async ({ q, field, limit }) => {
+        async ({ q, field, limit }: { q: string; field?: 'name' | 'description' | 'tags'; limit?: number }) => {
             const r = searchStacks({ q: q as string, field: field as ('name' | 'description' | 'tags') | undefined, limit: limit as number | undefined });
             return { content: [{ type: 'text' as const, text: JSON.stringify(r) }] };
         },
@@ -47,7 +54,7 @@ const handler = createMcpHandler((server) => {
         'page_summary',
         { path: z.string(), excerptLength: z.number().int().min(20).optional() },
         { title: 'Return a short summary for a content page' },
-        async ({ path: p, excerptLength }) => {
+        async ({ path: p, excerptLength }: { path: string; excerptLength?: number }) => {
             const r = pageSummary(p as string, excerptLength as number | undefined);
             return { content: [{ type: 'text' as const, text: JSON.stringify(r) }] };
         },
@@ -57,11 +64,17 @@ const handler = createMcpHandler((server) => {
         'render_stack_markdown',
         { id: z.string() },
         { title: 'Render a markdown summary for a stack id' },
-        async ({ id }) => {
+        async ({ id }: { id: string }) => {
             const md = renderStackMarkdown(id as string);
             return { content: [{ type: 'text' as const, text: md }] };
         },
     );
+}, {}, {
+    // mcp-handler's default streamableHttpEndpoint is "/mcp", derived from
+    // basePath "". This route is mounted at /api/mcp, so without this the
+    // handler's internal `url.pathname === streamableHttpEndpoint` check
+    // never matches a real request and every call 404s inside the handler.
+    basePath: '/api',
 });
 
 // Simple token-based auth wrapper using MCP_API_TOKEN
@@ -72,12 +85,6 @@ const verifyToken = async (req: Request, bearerToken?: string) => {
 };
 
 const authHandler = withMcpAuth(handler, verifyToken, { required: !!process.env.MCP_API_TOKEN, requiredScopes: ['mcp:invoke'], resourceMetadataPath: '/.well-known/oauth-protected-resource' });
-
-type HandlerMethods = {
-    GET: (req: Request) => Promise<Response>;
-    POST: (req: Request) => Promise<Response>;
-    DELETE: (req: Request) => Promise<Response>;
-};
 
 import { isRateLimited } from '@/lib/mcp/rateLimiter';
 
@@ -96,17 +103,17 @@ async function rateLimitGuard(req: Request) {
 export async function GET(request: Request) {
     const rl = await rateLimitGuard(request);
     if (rl) return rl;
-    return await (authHandler as unknown as HandlerMethods).GET(request);
+    return await authHandler(request);
 }
 
 export async function POST(request: Request) {
     const rl = await rateLimitGuard(request);
     if (rl) return rl;
-    return await (authHandler as unknown as HandlerMethods).POST(request);
+    return await authHandler(request);
 }
 
 export async function DELETE(request: Request) {
     const rl = await rateLimitGuard(request);
     if (rl) return rl;
-    return await (authHandler as unknown as HandlerMethods).DELETE(request);
+    return await authHandler(request);
 }
