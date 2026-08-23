@@ -72,6 +72,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+  {/* THESIS: Techspace is an evidence-backed working reference, not a badge wall. OWN-WORLD: a ruled paper catalogue with a fixed centre rail turns each tool into a documented entry. STORY: scan the index, narrow the register, open the field note. FIRST VIEWPORT: establish the reference promise and expose the search/filter rail immediately. FORM: seed a1ed5691 / assigned centre-rail reference-setting direction, used as the composition spine and annotation margin. FINISH: warm paper, red/blue editorial marks, strict hairlines, and source-aware notes instead of scores-as-status. */}
   {/* Structured Data for SEO */}
   <script
     type="application/ld+json"
